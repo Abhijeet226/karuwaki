@@ -1,0 +1,820 @@
+/**
+ * Karuwaki Web3 Athereal Astrological Engine Styles
+ * Cosmic field, ephemeris calculator, panchang dashboard, transit wheel,
+ * kundali chart SVG canvas, and adaptive light/dark astrological theme.
+ */
+
+/* ── BASE ── */
+body {
+    background-color: var(--bg-base) !important;
+    color: var(--text-primary) !important;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Cosmic field background */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 20% 50%, rgba(238,62,201,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(0,131,166,0.08) 0%, transparent 55%),
+        radial-gradient(ellipse at 60% 80%, rgba(141,198,63,0.05) 0%, transparent 50%),
+        var(--bg-base);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* ── HERO TITLE ── */
+.athereal-title {
+    font-family: var(--font-brand);
+    font-weight: 900;
+    font-size: var(--text-hero);
+    letter-spacing: -1.5px;
+    color: var(--accent-pink);
+    text-shadow:
+        0 0 24px rgba(238,62,201,0.4),
+        0 0 60px rgba(238,62,201,0.15);
+    text-align: center;
+    margin-bottom: var(--space-2);
+    line-height: 1.1;
+}
+
+.athereal-subtitle-pill {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: var(--text-xs);
+    letter-spacing: 2px;
+    color: rgba(238,62,201,0.9);
+    border: 1px solid rgba(238,62,201,0.3);
+    border-radius: var(--radius-pill);
+    padding: 5px 18px;
+    margin-bottom: var(--space-6);
+    background: rgba(238,62,201,0.06);
+}
+
+/* ── LEFT COLUMN ── */
+.left-col {
+    padding: 1rem 1.5rem;
+}
+
+.left-col p {
+    font-family: var(--font-sans);
+    text-align: left;
+    font-size: var(--text-base);
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: var(--space-4);
+}
+
+/* Feature bullets */
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-5) 0 0;
+}
+
+.feature-list li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.6;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-md);
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.feature-list li:hover {
+    background: rgba(238,62,201,0.06);
+    border-color: rgba(238,62,201,0.25);
+    transform: translateY(-1px);
+}
+
+.feature-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+/* ── VIDEO ── */
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    margin: var(--space-6) 0;
+    border: 1px solid rgba(238,62,201,0.2);
+    box-shadow:
+        0 0 32px rgba(238,62,201,0.12),
+        0 16px 48px rgba(0,0,0,0.5);
+}
+
+.video-container video {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border-radius: var(--radius-lg);
+}
+
+/* ── RIGHT COLUMN ── */
+.right-col {
+    padding: 1rem 1.5rem;
+}
+
+/* Tithi header */
+.tithi-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #0083A6 0%, #8DC63F 100%);
+    color: #fff;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-brand);
+    font-weight: 800;
+    font-size: var(--text-sm);
+    letter-spacing: 1.5px;
+    padding: 12px 24px;
+    margin-bottom: var(--space-6);
+    box-shadow: 0 4px 20px rgba(0,131,166,0.25);
+}
+
+.tithi-header::before { content: '🌙'; font-size: 20px; }
+.tithi-header::after  { content: '☀️'; font-size: 20px; }
+
+/* Search form */
+.search-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4) var(--space-5);
+    margin-bottom: var(--space-6);
+    backdrop-filter: blur(8px);
+    box-shadow: var(--card-shadow);
+}
+
+.search-card label {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: var(--text-xs);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: var(--space-2);
+}
+
+.search-row {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+}
+
+.search-card input[type="date"] {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    font-size: var(--text-sm);
+    transition: border-color 0.2s, background 0.2s;
+    outline: none;
+}
+
+.search-card input[type="date"]:focus {
+    border-color: rgba(0,131,166,0.6);
+    background: var(--bg-surface);
+    box-shadow: 0 0 0 3px rgba(0,131,166,0.15);
+}
+
+.today-reset-btn {
+    padding: 10px 18px;
+    background: rgba(0, 131, 166, 0.14);
+    border: 1.5px solid rgba(0, 131, 166, 0.45);
+    border-radius: var(--radius-md);
+    color: var(--accent-cyan);
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: var(--text-xs);
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.today-reset-btn:hover {
+    background: rgba(0, 131, 166, 0.28);
+    border-color: var(--accent-cyan);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(0, 131, 166, 0.35);
+}
+
+.today-reset-btn:active {
+    transform: translateY(0);
+}
+
+/* ── Kundali Chart & Generate Controls ── */
+#k-submit-btn,
+.search-btn,
+.btn-athereal-generate {
+    background: linear-gradient(135deg, #0083A6 0%, #8DC63F 100%);
+    color: #ffffff !important;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 10px 18px;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: var(--text-sm);
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 16px rgba(0, 131, 166, 0.3);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    text-decoration: none !important;
+}
+
+#k-submit-btn:hover,
+.search-btn:hover,
+.btn-athereal-generate:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(0, 131, 166, 0.45);
+    filter: brightness(1.08);
+}
+
+#k-submit-btn:active,
+.search-btn:active,
+.btn-athereal-generate:active {
+    transform: translateY(0);
+}
+
+.k-style-btn {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-card);
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 12px;
+    border-radius: 6px;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.k-style-btn:hover {
+    border-color: var(--accent-green);
+    color: var(--text-main);
+}
+
+.k-style-btn.active {
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+    background: rgba(193, 255, 114, 0.1);
+}
+
+.k-download-btn {
+    background: var(--accent-green);
+    color: #010a24 !important;
+    border: none;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 12px;
+    border-radius: 6px;
+    padding: 6px 14px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.k-download-btn:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.1);
+    box-shadow: 0 4px 12px rgba(193, 255, 114, 0.3);
+}
+
+.k-chart-badge {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+.k-lagna-badge {
+    background: rgba(193, 255, 114, 0.15);
+    color: var(--accent-green);
+    border: 1px solid rgba(193, 255, 114, 0.3);
+}
+
+.k-nakshatra-badge {
+    background: rgba(238, 62, 201, 0.12);
+    color: var(--accent-pink);
+    border: 1px solid rgba(238, 62, 201, 0.3);
+}
+
+/* Alert */
+.alert-no-data {
+    background: rgba(255,0,0,0.10);
+    border: 1px solid rgba(255,80,80,0.30);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    color: #f87171;
+    margin-bottom: var(--space-5);
+}
+
+/* Data grid */
+.astro-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.astro-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-md);
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.astro-row:hover {
+    background: rgba(0,131,166,0.06);
+    border-color: rgba(0,131,166,0.25);
+    transform: translateX(2px);
+}
+
+/* special rows */
+.astro-row.amrit   { border-left: 3px solid #15803d; }
+.astro-row.rahu    { border-left: 3px solid #dc2626; }
+.astro-row.abhijit { border-left: 3px solid #0284c7; }
+
+.astro-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-xs);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    width: 45%;
+}
+
+.astro-label-icon { font-size: 16px; }
+
+.astro-value {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: var(--text-sm);
+    letter-spacing: 0.2px;
+    color: var(--text-primary);
+    text-align: right;
+}
+
+/* ── DIVIDER ── */
+.cosmic-divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(238,62,201,0.3), rgba(0,131,166,0.3), transparent);
+    margin: var(--space-12) 0 var(--space-8);
+}
+
+/* ── REVEAL ── */
+.reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 991px) {
+    .left-col { padding: 1rem; }
+    .right-col { padding: 1rem; margin-top: 16px; }
+}
+
+/* ── PLANETARY TRANSIT WHEEL & RASHI SYNTHESIZER ── */
+.wheel-console-card {
+    background: var(--bg-surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    box-shadow: var(--card-shadow);
+}
+
+.wheel-display-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#celestial-wheel-svg {
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 16px rgba(0, 131, 166, 0.2));
+}
+
+.planet-pills-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+}
+
+.planet-pill-btn {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-sm);
+    padding: 6px 14px;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.planet-pill-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+}
+
+.planet-pill-btn.active {
+    background: rgba(193, 255, 114, 0.15);
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+    box-shadow: 0 0 12px rgba(193, 255, 114, 0.25);
+}
+
+/* Rashi Picker Grid */
+.rashi-grid-wrap {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+}
+
+.rashi-select-pill {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.rashi-select-pill:hover {
+    background: var(--bg-elevated);
+    border-color: rgba(238, 62, 201, 0.35);
+    transform: translateY(-2px);
+}
+
+.rashi-select-pill.active {
+    background: rgba(238, 62, 201, 0.12);
+    border-color: var(--accent-pink);
+    box-shadow: 0 0 16px rgba(238, 62, 201, 0.25);
+}
+
+.rashi-select-pill .rashi-glyph {
+    font-size: 20px;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.rashi-select-pill .rashi-name {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--text-primary);
+    display: block;
+}
+
+.rashi-select-pill .rashi-en {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    display: block;
+}
+
+.rashi-select-pill.active .rashi-name {
+    color: var(--accent-pink);
+}
+
+.rashi-forecast-card {
+    background: rgba(4, 14, 42, 0.7);
+    border: 1px solid rgba(193, 255, 114, 0.25);
+    border-radius: 20px;
+    padding: 30px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* ── LIGHT MODE STYLES & CONTRAST HARMONY ── */
+[data-theme="light"] body {
+    background-color: var(--bg-base) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="light"] body::before {
+    background:
+        radial-gradient(ellipse at 20% 50%, rgba(190, 24, 93, 0.05) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(0, 131, 166, 0.05) 0%, transparent 55%),
+        radial-gradient(ellipse at 60% 80%, rgba(21, 128, 61, 0.04) 0%, transparent 50%),
+        var(--bg-base) !important;
+}
+
+[data-theme="light"] .athereal-title {
+    color: #be185d;
+    text-shadow: 0 4px 20px rgba(190, 24, 93, 0.25), 0 0 40px rgba(190, 24, 93, 0.1);
+}
+
+[data-theme="light"] .athereal-subtitle-pill {
+    color: #be185d;
+    border-color: rgba(190, 24, 93, 0.3);
+    background: rgba(190, 24, 93, 0.06);
+}
+
+[data-theme="light"] .left-col p {
+    color: var(--text-secondary);
+}
+
+[data-theme="light"] .feature-list li {
+    color: var(--text-primary);
+    background: var(--bg-surface);
+    border-color: var(--border-card);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+[data-theme="light"] .feature-list li:hover {
+    background: rgba(190, 24, 93, 0.04);
+    border-color: rgba(190, 24, 93, 0.25);
+}
+
+[data-theme="light"] .search-card {
+    background: #ffffff !important;
+    border: 1px solid rgba(15, 23, 42, 0.12) !important;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05) !important;
+}
+
+[data-theme="light"] .search-card label {
+    color: #334155 !important;
+    font-weight: 800 !important;
+}
+
+[data-theme="light"] .search-card input[type="date"] {
+    background: #f8fafc !important;
+    border: 1.5px solid rgba(15, 23, 42, 0.16) !important;
+    color: #0f172a !important;
+    color-scheme: light !important;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+}
+
+[data-theme="light"] .search-card input[type="date"]:focus {
+    background: #ffffff !important;
+    border-color: #0083A6 !important;
+    box-shadow: 0 0 0 3px rgba(0, 131, 166, 0.15) !important;
+}
+
+[data-theme="light"] .today-reset-btn {
+    background: #ffffff !important;
+    border: 1.5px solid #0083A6 !important;
+    color: #0083A6 !important;
+    font-weight: 800 !important;
+    box-shadow: 0 2px 8px rgba(0, 131, 166, 0.12) !important;
+}
+
+[data-theme="light"] .today-reset-btn:hover {
+    background: #0083A6 !important;
+    border-color: #0083A6 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(0, 131, 166, 0.28) !important;
+    transform: translateY(-1px);
+}
+
+[data-theme="light"] .today-reset-btn:active {
+    transform: translateY(0);
+}
+
+[data-theme="light"] .astro-row {
+    background: var(--bg-surface);
+    border-color: var(--border-card);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+}
+
+[data-theme="light"] .astro-row:hover {
+    background: rgba(0, 131, 166, 0.06);
+    border-color: rgba(0, 131, 166, 0.2);
+}
+
+[data-theme="light"] .astro-label {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .astro-value {
+    color: var(--text-primary);
+}
+
+[data-theme="light"] .astro-row.amrit { border-left-color: #15803d; }
+[data-theme="light"] .astro-row.rahu { border-left-color: #dc2626; }
+[data-theme="light"] .astro-row.abhijit { border-left-color: #0284c7; }
+
+[data-theme="light"] #astro-insight-box {
+    background: rgba(190, 24, 93, 0.06) !important;
+    border-color: rgba(190, 24, 93, 0.25) !important;
+}
+
+[data-theme="light"] #astro-val-insight {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="light"] .wheel-console-card {
+    background: var(--bg-surface);
+    border-color: var(--border-card);
+    box-shadow: var(--card-shadow);
+}
+
+[data-theme="light"] .planet-pill-btn {
+    background: rgba(15, 23, 42, 0.04);
+    border-color: var(--border-card);
+    color: var(--text-secondary);
+}
+
+[data-theme="light"] .planet-pill-btn:hover {
+    background: rgba(15, 23, 42, 0.08);
+    color: var(--text-primary);
+}
+
+[data-theme="light"] .planet-pill-btn.active {
+    background: rgba(21, 128, 61, 0.12);
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+}
+
+[data-theme="light"] #planet-dossier-card {
+    background: rgba(15, 23, 42, 0.02) !important;
+    border-color: var(--border-card) !important;
+}
+
+[data-theme="light"] .rashi-select-pill {
+    background: var(--bg-surface);
+    border-color: var(--border-card);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+}
+
+[data-theme="light"] .rashi-select-pill:hover {
+    background: rgba(190, 24, 93, 0.04);
+    border-color: rgba(190, 24, 93, 0.25);
+}
+
+[data-theme="light"] .rashi-select-pill .rashi-name {
+    color: var(--text-primary);
+}
+
+[data-theme="light"] .rashi-select-pill .rashi-en {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .rashi-select-pill.active {
+    background: rgba(190, 24, 93, 0.08);
+    border-color: #be185d;
+    box-shadow: 0 4px 16px rgba(190, 24, 93, 0.15);
+}
+
+[data-theme="light"] .rashi-select-pill.active .rashi-name {
+    color: #be185d;
+}
+
+[data-theme="light"] .rashi-forecast-card {
+    background: var(--bg-surface);
+    border-color: var(--border-card);
+    box-shadow: var(--card-shadow);
+}
+
+[data-theme="light"] .section-heading-dyn {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="light"] .section-desc-dyn {
+    color: var(--text-secondary) !important;
+}
+
+[data-theme="light"] #celestial-wheel-svg circle.earth-center {
+    fill: #ffffff !important;
+}
+
+[data-theme="light"] #celestial-wheel-svg .planet-node-circle {
+    fill: #ffffff !important;
+}
+
+[data-theme="light"] #celestial-wheel-svg .rashi-symbol-text {
+    fill: var(--text-secondary) !important;
+}
+
+/* ── LIGHT THEME KUNDALI & CHART BUTTONS ── */
+[data-theme="light"] #k-submit-btn,
+[data-theme="light"] .search-btn,
+[data-theme="light"] .btn-athereal-generate {
+    background: linear-gradient(135deg, #0284c7 0%, #10b981 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25) !important;
+}
+
+[data-theme="light"] #k-submit-btn:hover,
+[data-theme="light"] .search-btn:hover,
+[data-theme="light"] .btn-athereal-generate:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(2, 132, 199, 0.4) !important;
+    filter: brightness(1.05);
+}
+
+[data-theme="light"] .k-style-btn {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+    color: #475569 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .k-style-btn:hover {
+    border-color: #059669 !important;
+    color: #059669 !important;
+}
+
+[data-theme="light"] .k-style-btn.active {
+    background: rgba(16, 185, 129, 0.1) !important;
+    border-color: #10b981 !important;
+    color: #047857 !important;
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.15) !important;
+}
+
+[data-theme="light"] .k-download-btn {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25) !important;
+}
+
+[data-theme="light"] .k-download-btn:hover {
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.38) !important;
+    filter: brightness(1.05);
+}
+
+[data-theme="light"] .k-lagna-badge {
+    background: rgba(16, 185, 129, 0.1) !important;
+    color: #047857 !important;
+    border-color: rgba(16, 185, 129, 0.25) !important;
+}
+
+[data-theme="light"] .k-nakshatra-badge {
+    background: rgba(190, 24, 93, 0.08) !important;
+    color: #be185d !important;
+    border-color: rgba(190, 24, 93, 0.25) !important;
+}

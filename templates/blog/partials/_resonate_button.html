@@ -1,0 +1,24 @@
+{% if request.user.is_authenticated and comment.user == request.user %}
+<button type="button"
+        class="comment-action-btn resonate-btn disabled-resonate"
+        id="resonate-btn-{{ comment.sno }}"
+        disabled
+        title="You cannot resonate with your own perspective">
+    <i class="bi bi-lightning-charge"></i>
+    <span class="resonate-label">Resonate</span>
+    <span class="resonate-count" id="resonate-count-{{ comment.sno }}">{% if comment.likes %}{{ comment.likes }}{% endif %}</span>
+</button>
+{% else %}
+<button type="button"
+        class="comment-action-btn resonate-btn {% if is_resonated or comment.sno in liked_comments or comment.sno|stringformat:'s' in liked_comments %}resonated{% endif %}"
+        id="resonate-btn-{{ comment.sno }}"
+        hx-post="{% url 'likeComment' %}"
+        hx-vals='{"comment_sno": "{{ comment.sno }}"}'
+        hx-target="this"
+        hx-swap="outerHTML"
+        title="{% if is_resonated or comment.sno in liked_comments or comment.sno|stringformat:'s' in liked_comments %}Remove resonance{% else %}Resonate with this thought{% endif %}">
+    <i class="bi bi-lightning-charge{% if is_resonated or comment.sno in liked_comments or comment.sno|stringformat:'s' in liked_comments %}-fill{% endif %}"></i>
+    <span class="resonate-label">Resonate</span>
+    <span class="resonate-count" id="resonate-count-{{ comment.sno }}">{% if comment.likes %}{{ comment.likes }}{% endif %}</span>
+</button>
+{% endif %}

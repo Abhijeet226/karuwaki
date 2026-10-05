@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}KSPEAK$ HOME{% endblock title %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'css/pages/home.css' %}">
+{% endblock custom_css %}
+
+{% block body %}
+
+        
+
+<!-- ══ HERO ══ -->
+<section class="hero-section">
+    <div class="app-container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="text-content">
+                    <span class="hero-eyebrow">WEB3.0 DE-FI MEDIA</span>
+                    <h2>Building Tomorrow's<br>Media Landscape</h2>
+                    <hr class="fancy-hr">
+                    <ul class="hero-taglines">
+                        <li>Empowering creators, audience &amp; brand owners.</li>
+                        <li>Authentic Community-Driven Content.</li>
+                        <li>Tokenholders at the heart of every decision.</li>
+                    </ul>
+                    <div class="hero-cta-row">
+                        <a href="/ai-magazine/" class="hero-cta hero-cta-primary">EXPLORE MAGAZINE</a>
+                        <a href="/blog/" class="hero-cta hero-cta-secondary">READ BLOG</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="video-wrapper">
+                    <video autoplay muted loop playsinline>
+                        <source src="/Karuwaki/static/web3/homepage/homepage-typing.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scroll-hint">
+        <span>SCROLL</span>
+        <div class="scroll-hint-arrow"></div>
+    </div>
+</section>
+
+<!-- ══ COMMUNITY SECTION ══ -->
+<section class="community-section">
+    <div class="app-container">
+        <div class="reveal">
+            <h3 class="section-heading">Unleash the Power of Community in Web3.0 De-Fi Media</h3>
+            <hr class="fancy-hr">
+        </div>
+        <div class="row mt-4">
+            <div class="col-lg-4 col-md-6 mb-4 reveal reveal-delay-1">
+                <div class="feature-card">
+                    <p>From tradition to innovation, reimagining media for a digital future.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4 reveal reveal-delay-2">
+                <div class="feature-card">
+                    <p>Exploring untold stories, redefining narratives in the digital era.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4 reveal reveal-delay-3">
+                <div class="feature-card">
+                    <p>Transforming content into dynamic AI-powered literary experiences.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4 reveal reveal-delay-1">
+                <div class="feature-card">
+                    <p>Empowering financial freedom through secure, decentralized Web3 solutions.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4 reveal reveal-delay-2">
+                <div class="feature-card">
+                    <p>Building bridges for creators, enabling voices to thrive.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4 reveal reveal-delay-3">
+                <div class="feature-card">
+                    <p>Celebrating local stories, amplifying traditions on a global stage.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ PLATFORM SECTION ══ -->
+<section class="platform-section">
+    <div class="app-container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0 reveal">
+                <p class="platform-text">
+                    Our platform bridges the gap between traditional and modern media, empowering a seamless transition to Web3 and AI-driven innovation.
+                </p>
+            </div>
+            <div class="col-lg-6 reveal reveal-delay-2">
+                <button class="nav-btn" onclick="location.href='/ai-magazine/'">
+                    <span>GENERATIVE COLLAB MAGAZINE</span>
+                    <span class="nav-btn-arrow">→</span>
+                </button>
+                <button class="nav-btn" onclick="location.href='/athereal/'">
+                    <span>A.I ASTROLOGY TOOLS</span>
+                    <span class="nav-btn-arrow">→</span>
+                </button>
+                <button class="nav-btn nav-btn-disabled">
+                    <span>KSPEAK$ TOKEN &amp; WHITEPAPER</span>
+                    <span class="nav-btn-arrow" style="font-size:0.85rem; letter-spacing:1px; font-family:'Big Shoulders Stencil Text',sans-serif;">SOON</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ SOCIAL SECTION ══ -->
+<section class="social-section">
+    <div class="app-container">
+        <div class="row justify-content-center reveal">
+            <div class="col-3 col-sm-2 col-lg-1 mb-3 text-center">
+                <a href="https://youtube.com/@karuwakispeaks6750?si=xJt3buQz_5YjEt6u" target="_blank" class="social-icon-link" title="YouTube">
+                    <img src="/Karuwaki/static/web3/homepage/YouTube_icon.svg" alt="YouTube">
+                </a>
+            </div>
+            <div class="col-3 col-sm-2 col-lg-1 mb-3 text-center">
+                <a href="https://t.me/[YourTelegramChannel]" target="_blank" class="social-icon-link" title="Telegram">
+                    <img src="/Karuwaki/static/web3/homepage/Telegram_icon.svg" alt="Telegram">
+                </a>
+            </div>
+            <div class="col-3 col-sm-2 col-lg-1 mb-3 text-center">
+                <a href="https://www.facebook.com/karuwaki" target="_blank" class="social-icon-link" title="Facebook">
+                    <img src="/Karuwaki/static/web3/homepage/Facebook_icon.svg" alt="Facebook">
+                </a>
+            </div>
+            <div class="col-3 col-sm-2 col-lg-1 mb-3 text-center">
+                <a href="https://twitter.com/KaruwakiS" target="_blank" class="social-icon-link" title="Twitter / X">
+                    <img src="/Karuwaki/static/web3/homepage/X_icon.svg" alt="Twitter">
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock body %}
+
+{% block js %}
+<script src="{% static 'js/modules/home.js' %}"></script>
+{% endblock js %}

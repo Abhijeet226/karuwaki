@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load extras %}
+
+{% block title %}AI Aided Magazine | KSPEAK$ WEB3.0{% endblock title %}
+
+{% block meta_description %}Explore Karuwaki Speaks AI-Aided Magazine: neural dispatch curation, synthetic intelligence analysis, and multidimensional parameter scanning.{% endblock meta_description %}
+{% block meta_keywords %}AI Magazine, Artificial Intelligence, Synthetic Journalism, Karuwaki Speaks, Neural Curation, Web3 Media{% endblock meta_keywords %}
+
+{% block og_type %}website{% endblock og_type %}
+{% block og_title %}AI Aided Magazine | KSPEAK$ WEB3.0{% endblock og_title %}
+{% block og_description %}Synthetic intelligence platform & neural editorial curation exploring culture, science, and philosophical inquiry.{% endblock og_description %}
+
+{% block twitter_card %}summary_large_image{% endblock twitter_card %}
+{% block twitter_title %}AI Aided Magazine | KSPEAK$ WEB3.0{% endblock twitter_title %}
+{% block twitter_description %}Synthetic intelligence platform & neural editorial curation exploring culture, science, and philosophical inquiry.{% endblock twitter_description %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'css/pages/ai-magazine.css' %}">
+{% endblock custom_css %}
+
+{% block body %}
+<div class="app-container">
+
+    <!-- ══ COMPACT HERO BANNER ══ -->
+    <div class="hero-banner-wrap">
+        <video autoplay muted loop playsinline>
+            <source src="/Karuwaki/static/web3/ai-magazine/ai-aided-magazine.mp4" type="video/mp4">
+        </video>
+        <div class="hero-banner-overlay">
+            <span class="hero-eyebrow">INTELLIGENCE PLATFORM · KSPEAK$ WEB3.0</span>
+            <h1 class="hero-title">A.I. AIDED MAGAZINE</h1>
+        </div>
+    </div>
+
+    <!-- ══ SYMMETRICAL NEURAL ARTICLE SUGGESTION (NO DEAD SPACE) ══ -->
+    <div class="section-header-wrap">
+        <span class="section-tag">AI-POWERED RESONANCE</span>
+        <h2 class="section-heading">Smart Article Suggestion</h2>
+        <p class="section-subtext">Tune the neural mood sliders — our algorithm balances resonance vectors to surface your optimal dispatch.</p>
+    </div>
+
+    <div class="suggestion-dashboard">
+        <!-- Left Deck: Sliders & Scan Trigger -->
+        <div class="sliders-deck-card">
+            <div>
+                <div class="deck-header">
+                    <h3 class="deck-title"><i class="bi bi-sliders"></i> NEURAL MOOD VECTORS</h3>
+                    <span style="font-size:11px; font-family:'Big Shoulders Stencil Text'; letter-spacing:1px; color:rgba(255,255,255,0.45);">SCALE 0 - 10</span>
+                </div>
+
+                <div class="slider-row">
+                    <div class="slider-label-row">
+                        <span class="slider-label-text">CREATIVE</span>
+                        <span class="slider-val-badge" id="val-creative">0</span>
+                    </div>
+                    <input type="range" id="creative" name="creative" min="0" max="10" step="1" value="0">
+                </div>
+
+                <div class="slider-row">
+                    <div class="slider-label-row">
+                        <span class="slider-label-text">NOSTALGIC</span>
+                        <span class="slider-val-badge" id="val-nostalgic">0</span>
+                    </div>
+                    <input type="range" id="nostalgic" name="nostalgic" min="0" max="10" step="1" value="0">
+                </div>
+
+                <div class="slider-row">
+                    <div class="slider-label-row">
+                        <span class="slider-label-text">LEARNING</span>
+                        <span class="slider-val-badge" id="val-learning">0</span>
+                    </div>
+                    <input type="range" id="learning" name="learning" min="0" max="10" step="1" value="0">
+                </div>
+
+                <div class="slider-row" style="margin-bottom:8px;">
+                    <div class="slider-label-row">
+                        <span class="slider-label-text">JUST FUN</span>
+                        <span class="slider-val-badge" id="val-fun">0</span>
+                    </div>
+                    <input type="range" id="just_for_fun" name="just_for_fun" min="0" max="10" step="1" value="0">
+                </div>
+            </div>
+
+            <button type="button" class="btn-scan-trigger" id="suggest-button">
+                <i class="bi bi-cpu-fill"></i>
+                <span id="btn-scan-text">INITIALIZE NEURAL SCAN</span>
+            </button>
+        </div>
+
+        <!-- Right Deck: Symmetrically Flush Prediction Viewport -->
+        <div class="viewport-deck-card">
+            <!-- Idle Radar -->
+            <div class="viewport-idle-state" id="viewport-idle">
+                <div class="radar-orb">
+                    <i class="bi bi-radar"></i>
+                </div>
+                <h4 class="viewport-idle-title">NEURAL ENGINE SYNCHRONIZED</h4>
+                <p class="viewport-idle-desc">
+                    Adjust the mood vectors on the left and trigger a scan. The neural matcher will stream the best resonant article right here.
+                </p>
+            </div>
+
+            <!-- Matched Result (Reveals cleanly in same box) -->
+            <div class="viewport-result-state" id="viewport-result">
+                <div class="result-top-bar">
+                    <span class="result-match-pill" id="result-badge">98% NEURAL MATCH</span>
+                    <span style="font-family:'Big Shoulders Stencil Text'; font-size:11px; letter-spacing:1px; color:var(--green);" id="result-category">CREATIVE</span>
+                </div>
+
+                <div class="result-thumb-box" id="result-thumb-wrap">
+                    <img id="result-thumb" src="" alt="Dispatch Cover">
+                </div>
+
+                <h4 class="result-article-title" id="result-title">Title Loading...</h4>
+                <p class="result-article-excerpt" id="result-excerpt">Excerpt...</p>
+                <a class="btn-read-dispatch" id="result-link" href="#">READ MATCHED DISPATCH →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ AI CURATED ARCHIVE (BALANCED EQUAL-HEIGHT GRID) ══ -->
+    <div class="section-header-wrap mt-5">
+        <span class="section-tag">CURATED INTELLIGENCE</span>
+        <h2 class="section-heading">Curated AI Dispatches</h2>
+        <p class="section-subtext">Handpicked transmissions enhanced and curated through our traditional knowledge neural agent.</p>
+    </div>
+
+    <div class="curated-grid">
+        {% for article in curated_articles %}
+        <div class="curated-card">
+            <div class="curated-img-wrap">
+                {% if article.image %}
+                <img src="{{ article.image.url }}" alt="{{ article.title }}">
+                {% else %}
+                <div style="background:#0c1936; width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#fff;">✦</div>
+                {% endif %}
+                <span class="curated-mood-pill">{{ article.ai_mood|default:"INTELLIGENCE"|upper }}</span>
+            </div>
+            <div class="curated-card-body">
+                <div class="curated-meta-row">
+                    <span>{{ article.category.name|upper }}</span>
+                    <span>•</span>
+                    <span>{{ article.reading_time }} MIN READ</span>
+                </div>
+                <h3 class="curated-card-title">
+                    <a href="/blog/{{ article.slug }}/">{{ article.title }}</a>
+                </h3>
+                <p class="curated-excerpt-text">
+                    {{ article.excerpt|default:article.content|clean_excerpt:18 }}
+                </p>
+                <div class="curated-card-footer">
+                    <span style="font-family:'Big Shoulders Stencil Text'; font-size:10.5px; color:rgba(255,255,255,0.45);">
+                        {{ article.timeStamp|date:"M Y" }}
+                    </span>
+                    <a href="/blog/{{ article.slug }}/" class="curated-read-link">READ DISPATCH →</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- ══ JOURNEY & HIGHLIGHTS ══ -->
+    <div class="section-header-wrap mt-5">
+        <span class="section-tag">OUR JOURNEY</span>
+        <h2 class="section-heading">Heritage &amp; Intelligence</h2>
+    </div>
+
+    <div class="stats-strip">
+        <div class="stat-box">
+            <span class="stat-num">2020</span>
+            <span class="stat-lbl">ESTABLISHED</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-num">500+</span>
+            <span class="stat-lbl">CURATED DISPATCHES</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-num">ODISHA</span>
+            <span class="stat-lbl">TO THE DECENTRALIZED WORLD</span>
+        </div>
+    </div>
+
+    <div class="journey-matrix">
+        <div class="matrix-card">
+            <div class="matrix-body">
+                <span class="matrix-pill">MILESTONE 01</span>
+                <p class="matrix-text">Traditional manuscripts and regional dispatches enhanced through modern cognitive models.</p>
+            </div>
+        </div>
+
+        <div class="matrix-card">
+            <div class="matrix-body">
+                <span class="matrix-pill">MILESTONE 02</span>
+                <p class="matrix-text">Engineering India's inaugural AI agent specialized in indigenous astronomical &amp; herbal heritage.</p>
+            </div>
+        </div>
+
+        <div class="matrix-card">
+            <div class="matrix-body">
+                <span class="matrix-pill">MILESTONE 03</span>
+                <p class="matrix-text">Bridging millennia-old heritage with modern Web3.0 decentralized media protocols.</p>
+            </div>
+        </div>
+
+        <div class="matrix-card">
+            <div class="matrix-body">
+                <span class="matrix-pill">MILESTONE 04</span>
+                <p class="matrix-text">Distributing regional intelligence to researchers, academics, and cosmic explorers globally.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ KARU-WISDOM-LLM ══ -->
+    <div class="section-header-wrap mt-5">
+        <span class="section-tag">COGNITIVE ARCHITECTURE</span>
+        <h2 class="section-heading">Karu-Wisdom-LLM</h2>
+        <p class="section-subtext">The specialized language engine powering traditional knowledge preservation.</p>
+    </div>
+
+    <div class="wisdom-matrix mb-5">
+        <div class="wisdom-item">
+            <span class="wisdom-item-icon">⚡</span>
+            <p class="wisdom-item-text"><strong>SPECIALIZED MODEL</strong> — Fine-tuned to safeguard and interpret Odishan classical literature, astrology, and holistic well-being.</p>
+        </div>
+        <div class="wisdom-item">
+            <span class="wisdom-item-icon">🪷</span>
+            <p class="wisdom-item-text"><strong>CULTURAL FIDELITY</strong> — Preserves the contextual authenticity of ancient philosophical systems without Westernized distortion.</p>
+        </div>
+        <div class="wisdom-item">
+            <span class="wisdom-item-icon">🔓</span>
+            <p class="wisdom-item-text"><strong>COMMUNITY ACCESS</strong> — Open research dispatches paired with advanced research capabilities for Karuwaki community members.</p>
+        </div>
+        <div class="wisdom-item">
+            <span class="wisdom-item-icon">🌐</span>
+            <p class="wisdom-item-text"><strong>DECENTRALIZED ARCHIVE</strong> — Permanent archival on decentralized networks ensuring generational permanence.</p>
+        </div>
+    </div>
+
+</div>
+{% endblock body %}
+
+{% block js %}
+<script src="{% static 'js/modules/ai-magazine.js' %}"></script>
+{% endblock js %}

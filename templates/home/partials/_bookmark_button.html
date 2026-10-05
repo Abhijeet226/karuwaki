@@ -1,0 +1,8 @@
+<button type="button"
+        class="bookmark-icon-btn bookmark-toggle-btn {% if is_saved %}saved{% endif %}"
+        hx-post="{% url 'toggle_save_post' post.slug %}"
+        hx-target="this"
+        hx-swap="outerHTML"
+        title="Bookmark Article">
+    <i class="bi {% if is_saved %}bi-bookmark-fill text-warning{% else %}bi-bookmark{% endif %}"></i>
+</button>

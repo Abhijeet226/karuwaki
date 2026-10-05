@@ -1,0 +1,671 @@
+/**
+ * Karuwaki Wisdom AI Floating Assistant & Knowledge Explorer Stylesheet
+ * Floating launcher trigger, modal backdrop, dialog card, quick prompt chips,
+ * streaming output container, and verified source badges.
+ */
+
+/* ── Floating Launcher ── */
+.karu-wisdom-launcher {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1040;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, rgba(20, 26, 45, 0.95), rgba(10, 14, 26, 0.98));
+    border: 1px solid rgba(193, 255, 114, 0.35);
+    border-radius: 9999px;
+    padding: 8px 16px 8px 10px;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(193, 255, 114, 0.2);
+    backdrop-filter: blur(12px);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.karu-wisdom-launcher:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(193, 255, 114, 0.5), 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+[data-theme="light"] .karu-wisdom-launcher {
+    background: linear-gradient(135deg, #ffffff, #f8fafc);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    color: #0f172a;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08), 0 0 12px rgba(16, 185, 129, 0.15);
+}
+[data-theme="light"] .karu-wisdom-launcher:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.5), 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+.karu-wisdom-launcher:hover {
+    transform: translateY(-3px) scale(1.02);
+    border-color: var(--accent-green);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5), 0 0 22px rgba(193, 255, 114, 0.35);
+}
+[data-theme="light"] .karu-wisdom-launcher:hover {
+    border-color: #10b981;
+    box-shadow: 0 12px 28px rgba(16, 185, 129, 0.22), 0 0 16px rgba(16, 185, 129, 0.2);
+}
+.karu-wisdom-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #C1FF72, #38bdf8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #020817;
+    font-size: 15px;
+    font-weight: 900;
+}
+.karu-wisdom-label {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+}
+.karu-wisdom-badge-ai {
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    background: rgba(193, 255, 114, 0.15);
+    color: var(--accent-green);
+    border: 1px solid rgba(193, 255, 114, 0.3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+[data-theme="light"] .karu-wisdom-badge-ai {
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.karu-launcher-kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: monospace;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.4;
+    margin-left: 2px;
+}
+[data-theme="light"] .karu-launcher-kbd {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.15);
+    color: #64748b;
+}
+
+/* ── Modal Dialog ── */
+.karu-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 8, 23, 0.75);
+    backdrop-filter: blur(8px);
+    z-index: 1060;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+.karu-modal-backdrop.active {
+    display: flex;
+    opacity: 1;
+}
+.karu-modal-card {
+    width: 100%;
+    max-width: 620px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 85vh;
+    animation: karuSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes karuSlideUp {
+    from { transform: translateY(20px) scale(0.97); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+.karu-modal-header {
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--border-card);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-surface);
+}
+.karu-modal-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.karu-modal-title {
+    font-family: var(--font-heading);
+    font-size: 17px;
+    font-weight: 800;
+    margin: 0;
+    color: var(--text-main);
+}
+.karu-modal-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.karu-modal-action-btn,
+.karu-modal-close {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-card);
+    color: var(--text-secondary);
+    font-size: 15px;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.karu-modal-action-btn:hover {
+    background: rgba(193, 255, 114, 0.12);
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+    transform: rotate(-45deg);
+}
+.karu-modal-close {
+    font-size: 16px;
+}
+.karu-modal-close:hover {
+    background: rgba(238, 62, 201, 0.12);
+    border-color: rgba(238, 62, 201, 0.4);
+    color: #ff6fe8;
+}
+.karu-modal-action-btn:focus-visible,
+.karu-modal-close:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent-green);
+}
+
+[data-theme="light"] .karu-modal-action-btn,
+[data-theme="light"] .karu-modal-close {
+    background: #f8fafc;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #475569;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+[data-theme="light"] .karu-modal-action-btn:hover {
+    background: rgba(16, 185, 129, 0.12);
+    border-color: #10b981;
+    color: #059669;
+    transform: rotate(-45deg);
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.18);
+}
+[data-theme="light"] .karu-modal-close:hover {
+    background: #fee2e2;
+    border-color: #fca5a5;
+    color: #dc2626;
+    box-shadow: 0 2px 6px rgba(220, 38, 38, 0.12);
+}
+.karu-modal-body {
+    padding: 20px 22px;
+    overflow-y: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.karu-chips-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+.karu-chip-btn {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-card);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 11px;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.karu-chip-btn:hover {
+    border-color: var(--accent-green);
+    background: rgba(193, 255, 114, 0.08);
+    color: var(--accent-green);
+}
+.karu-chip-btn.active {
+    border-color: var(--accent-green);
+    background: rgba(193, 255, 114, 0.18);
+    color: var(--accent-green);
+    box-shadow: 0 0 10px rgba(193, 255, 114, 0.2);
+}
+[data-theme="light"] .karu-chip-btn:hover {
+    border-color: #059669;
+    background: rgba(5, 150, 105, 0.08);
+    color: #059669;
+}
+[data-theme="light"] .karu-chip-btn.active {
+    border-color: #059669;
+    background: rgba(5, 150, 105, 0.15);
+    color: #047857;
+    box-shadow: 0 0 8px rgba(5, 150, 105, 0.15);
+}
+.karu-output-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+.karu-copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 5;
+    background: rgba(4, 14, 42, 0.85);
+    border: 1px solid rgba(193, 255, 114, 0.3);
+    border-radius: 6px;
+    color: var(--accent-green);
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    backdrop-filter: blur(10px);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+.karu-copy-btn:hover {
+    background: rgba(193, 255, 114, 0.15);
+    color: #ffffff;
+    border-color: var(--accent-green);
+    box-shadow: 0 0 12px rgba(193, 255, 114, 0.25);
+    transform: translateY(-1px);
+}
+.karu-copy-btn.copied {
+    background: rgba(193, 255, 114, 0.25);
+    color: #ffffff;
+    border-color: var(--accent-green);
+}
+[data-theme="light"] .karu-copy-btn {
+    background: #ffffff;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    color: #047857;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    backdrop-filter: blur(8px);
+}
+[data-theme="light"] .karu-copy-btn:hover {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #ffffff;
+    border-color: #059669;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    transform: translateY(-1px);
+}
+[data-theme="light"] .karu-copy-btn.copied {
+    background: #059669;
+    color: #ffffff;
+    border-color: #059669;
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);
+}
+.karu-output-box {
+    min-height: 120px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-md);
+    padding: 16px 40px 16px 16px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text-main);
+    overflow-y: auto;
+    max-height: 320px;
+}
+.karu-output-box strong {
+    color: var(--accent-green);
+}
+[data-theme="light"] .karu-output-box strong {
+    color: #047857;
+}
+.karu-output-box blockquote {
+    margin: 10px 0;
+    padding: 8px 12px;
+    border-left: 3px solid var(--accent-green);
+    background: rgba(193, 255, 114, 0.05);
+    font-size: 12.5px;
+    color: var(--text-secondary);
+}
+[data-theme="light"] .karu-output-box blockquote {
+    border-left-color: #059669;
+    background: rgba(5, 150, 105, 0.05);
+}
+.karu-md-heading {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 10px 0 4px 0;
+}
+.karu-code {
+    font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
+    font-size: 12px;
+    background: rgba(193, 255, 114, 0.1);
+    color: var(--accent-green);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid rgba(193, 255, 114, 0.2);
+}
+[data-theme="light"] .karu-code {
+    background: rgba(16, 185, 129, 0.08);
+    color: #047857;
+    border-color: rgba(16, 185, 129, 0.2);
+}
+.karu-md-list {
+    margin: 6px 0;
+    padding-left: 18px;
+}
+.karu-md-li {
+    margin-bottom: 3px;
+    line-height: 1.55;
+}
+.karu-modal-footer {
+    padding: 14px 22px;
+    border-top: 1px solid var(--border-card);
+    background: var(--bg-surface);
+}
+.karu-input-group {
+    display: flex;
+    gap: 8px;
+}
+.karu-input-field {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    font-size: 13.5px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+.karu-input-field:focus {
+    border-color: var(--accent-green);
+    box-shadow: 0 0 0 3px rgba(193, 255, 114, 0.15);
+}
+[data-theme="light"] .karu-input-field:focus {
+    border-color: #059669;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+}
+.karu-send-btn {
+    background: var(--accent-green);
+    color: #020817;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 0 16px;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+.karu-send-btn:hover:not(:disabled) {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(193, 255, 114, 0.35);
+}
+.karu-send-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    filter: none;
+}
+[data-theme="light"] .karu-send-btn {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.2);
+}
+[data-theme="light"] .karu-send-btn:hover:not(:disabled) {
+    box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35);
+    filter: brightness(1.05);
+}
+.karu-source-pill {
+    font-size: 11px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 6px;
+}
+
+/* ── Inline Links ── */
+.karu-inline-link {
+    color: var(--accent-green);
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px dashed rgba(193, 255, 114, 0.4);
+    transition: all 0.2s ease;
+}
+.karu-inline-link:hover {
+    color: #ffffff;
+    border-bottom-color: var(--accent-green);
+}
+[data-theme="light"] .karu-inline-link {
+    color: #059669;
+    border-bottom-color: rgba(5, 150, 105, 0.4);
+}
+[data-theme="light"] .karu-inline-link:hover {
+    color: #047857;
+}
+
+/* ── Related Editorial Dispatches Card ── */
+.karu-dispatches-card {
+    background: rgba(2, 8, 23, 0.6);
+    border: 1px solid rgba(193, 255, 114, 0.2);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    margin-top: 14px;
+}
+[data-theme="light"] .karu-dispatches-card {
+    background: #f8fafc;
+    border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.karu-dispatches-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--accent-green);
+    margin-bottom: 10px;
+}
+[data-theme="light"] .karu-dispatches-heading {
+    color: #059669;
+}
+
+.karu-dispatches-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.karu-dispatch-item {
+    display: block;
+    text-decoration: none;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-card);
+    border-radius: 8px;
+    padding: 10px 12px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--text-main);
+}
+.karu-dispatch-item:hover {
+    transform: translateX(4px);
+    border-color: var(--accent-green);
+    background: rgba(193, 255, 114, 0.04);
+    color: var(--text-main);
+}
+[data-theme="light"] .karu-dispatch-item {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] .karu-dispatch-item:hover {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.04);
+}
+
+.karu-dispatch-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.karu-dispatch-cat {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--accent-green);
+    background: rgba(193, 255, 114, 0.1);
+    padding: 1px 6px;
+    border-radius: 4px;
+}
+[data-theme="light"] .karu-dispatch-cat {
+    color: #059669;
+    background: rgba(5, 150, 105, 0.1);
+}
+
+.karu-dispatch-time {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.karu-dispatch-title {
+    font-family: var(--font-heading);
+    font-size: 13.5px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--text-main);
+    margin-bottom: 4px;
+}
+
+.karu-dispatch-excerpt {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.karu-dispatch-cta {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent-green);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+[data-theme="light"] .karu-dispatch-cta {
+    color: #059669;
+}
+
+/* ── Loading Spinner Animation ── */
+@keyframes karuSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+.spin {
+    display: inline-block;
+    animation: karuSpin 1s linear infinite;
+}
+
+/* ── Mobile Viewport Adaptations ── */
+@media (max-width: 640px) {
+    .karu-wisdom-launcher {
+        bottom: 16px;
+        right: 16px;
+        padding: 6px 12px 6px 6px;
+        gap: 6px;
+    }
+    .karu-wisdom-avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 13px;
+    }
+    .karu-wisdom-label {
+        font-size: 12px;
+    }
+    .karu-modal-card {
+        max-height: 90vh;
+        border-radius: var(--radius-lg);
+    }
+    .karu-modal-header,
+    .karu-modal-body,
+    .karu-modal-footer {
+        padding: 14px 16px;
+    }
+    .karu-chips-row {
+        gap: 6px;
+    }
+    .karu-chip-btn {
+        font-size: 11.5px;
+        padding: 4px 9px;
+    }
+}
+
+/* ── Custom Glassmorphism Scrollbar ── */
+.karu-modal-body::-webkit-scrollbar,
+.karu-output-box::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+.karu-modal-body::-webkit-scrollbar-track,
+.karu-output-box::-webkit-scrollbar-track {
+    background: transparent;
+}
+.karu-modal-body::-webkit-scrollbar-thumb,
+.karu-output-box::-webkit-scrollbar-thumb {
+    background: rgba(193, 255, 114, 0.2);
+    border-radius: 9999px;
+}
+.karu-modal-body::-webkit-scrollbar-thumb:hover,
+.karu-output-box::-webkit-scrollbar-thumb:hover {
+    background: rgba(193, 255, 114, 0.45);
+}
+[data-theme="light"] .karu-modal-body::-webkit-scrollbar-thumb,
+[data-theme="light"] .karu-output-box::-webkit-scrollbar-thumb {
+    background: rgba(16, 185, 129, 0.25);
+}
+[data-theme="light"] .karu-modal-body::-webkit-scrollbar-thumb:hover,
+[data-theme="light"] .karu-output-box::-webkit-scrollbar-thumb:hover {
+    background: rgba(16, 185, 129, 0.5);
+}

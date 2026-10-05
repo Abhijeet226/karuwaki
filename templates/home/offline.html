@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Offline Reading Vault | KSPEAK$ WEB3.0{% endblock title %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'css/pages/errors.css' %}">
+{% endblock custom_css %}
+
+{% block body %}
+<div class="app-container py-4">
+    <div class="offline-vault-wrap">
+        <!-- Radar Orb -->
+        <div class="offline-radar-orb">
+            <i class="bi bi-wifi-off"></i>
+        </div>
+
+        <span class="offline-badge">SIGNAL DETACHED · 2026 PWA OFFLINE MODE</span>
+        <h1 class="offline-title">Offline Reading Vault</h1>
+        <p class="offline-desc">
+            You are disconnected from the network grid. Dispatches you previously read or bookmarked are preserved locally in your offline vault.
+        </p>
+
+        <button type="button" class="btn-retry-network" id="btn-retry-network" onclick="checkNetworkAndReload()">
+            <i class="bi bi-arrow-clockwise"></i> ATTEMPT RECONNECTION
+        </button>
+        <div id="network-status-pill" class="d-none mt-3" style="font-family:var(--font-sans); font-size:12px; font-weight:700; color:#ffb703; background:rgba(255,183,3,0.1); border:1px solid rgba(255,183,3,0.3); border-radius:30px; display:inline-flex; align-items:center; gap:6px; padding:6px 16px;">
+            <i class="bi bi-wifi-off"></i> Signal still detached. Preserving offline vault mode.
+        </div>
+
+        <!-- Cached Vault Container -->
+        <div class="text-start mb-3">
+            <h3 style="font-family:var(--font-heading); font-size:13px; font-weight:800; letter-spacing:1.5px; color:var(--accent-green); margin-bottom:14px;">
+                <i class="bi bi-box-seam me-1"></i> LOCALLY PRESERVED DISPATCHES
+            </h3>
+        </div>
+
+        <div class="vault-grid" id="offline-vault-list">
+            <!-- Populated via IndexedDB in pwa-vault.js -->
+        </div>
+
+        <div class="empty-vault-box" id="empty-vault-notice" style="display:none;">
+            <i class="bi bi-bookmark-x empty-vault-icon"></i>
+            <h4 class="empty-vault-title">VAULT CURRENTLY EMPTY</h4>
+            <p class="empty-vault-desc">
+                When online, bookmark articles or browse dispatches. They will automatically be cached into this vault for offline reading.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+
+{% block js %}
+<script src="{% static 'js/modules/offline-vault.js' %}"></script>
+{% endblock js %}

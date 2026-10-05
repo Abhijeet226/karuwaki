@@ -1,0 +1,47 @@
+# Environment & Secrets (LOCAL ONLY - NEVER COMMIT)
+.env
+.env.*
+!.env.example
+secrets/
+
+# Database files
+*.sqlite3
+*.db
+db.sqlite3
+
+# Python virtual environment
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache & bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# User uploaded media (large files & dynamic uploads)
+media/
+!media/.gitkeep
+
+# Collected static assets (re-generated on deployment with collectstatic)
+assets/
+
+# Temporary and log files
+tmp/
+*.log
+
+# IDE & Editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Operating system files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,429 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load extras %}
+
+{% block title %}{{ post.title }} | KSPEAK$ WEB3.0{% endblock title %}
+
+{% block meta_description %}{{ post.excerpt|default:post.content|striptags|truncatechars:160 }}{% endblock meta_description %}
+{% block meta_keywords %}{{ post.tags|default:post.category.name }}, Karuwaki Speaks, Editorial Dispatch, {{ post.category.name }}{% endblock meta_keywords %}
+{% block meta_author %}{{ post.display_author_name|default:post.author }}{% endblock meta_author %}
+
+{% block og_type %}article{% endblock og_type %}
+{% block og_title %}{{ post.title }} | Karuwaki Speaks{% endblock og_title %}
+{% block og_description %}{{ post.excerpt|default:post.content|striptags|truncatechars:160 }}{% endblock og_description %}
+{% block og_image %}{% if post.image %}{{ request.scheme }}://{{ request.get_host }}{{ post.image.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}/Karuwaki/static/web3/kspeaks-web3-logo.png{% endif %}{% endblock og_image %}
+{% block og_image_alt %}{{ post.title }}{% endblock og_image_alt %}
+
+{% block twitter_card %}summary_large_image{% endblock twitter_card %}
+{% block twitter_title %}{{ post.title }} | Karuwaki Speaks{% endblock twitter_title %}
+{% block twitter_description %}{{ post.excerpt|default:post.content|striptags|truncatechars:160 }}{% endblock twitter_description %}
+{% block twitter_image %}{% if post.image %}{{ request.scheme }}://{{ request.get_host }}{{ post.image.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}/Karuwaki/static/web3/kspeaks-web3-logo.png{% endif %}{% endblock twitter_image %}
+
+{% block head_extra %}
+<!-- Schema.org Article Structured Data (Google Rich Snippets) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ post.title|escapejs }}",
+  "description": "{{ post.excerpt|default:post.content|striptags|truncatechars:160|escapejs }}",
+  "image": [
+    {% if post.image %}"{{ request.scheme }}://{{ request.get_host }}{{ post.image.url }}"{% else %}"{{ request.scheme }}://{{ request.get_host }}/Karuwaki/static/web3/kspeaks-web3-logo.png"{% endif %}
+  ],
+  "datePublished": "{{ post.timeStamp|date:'c' }}",
+  "dateModified": "{{ post.timeStamp|date:'c' }}",
+  "articleSection": "{{ post.category.name|default:'Editorial'|escapejs }}",
+  "wordCount": "{{ post.content|wordcount }}",
+  "timeRequired": "PT{{ post.reading_time|default:3 }}M",
+  "inLanguage": "en",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ request.build_absolute_uri }}"
+  },
+  "author": [{
+    "@type": "Person",
+    "name": "{{ post.display_author_name|default:post.author|escapejs }}",
+    {% if post.author_profile %}
+    "url": "{{ request.scheme }}://{{ request.get_host }}{% url 'author_posts' post.author_profile.slug %}",
+    "jobTitle": "{{ post.author_profile.designation|default:'Contributing Author'|escapejs }}"
+    {% endif %}
+  }],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Karuwaki Speaks",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ request.scheme }}://{{ request.get_host }}/Karuwaki/static/web3/kspeaks-web3-logo.png"
+    }
+  }
+}
+</script>
+{% endblock head_extra %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'css/pages/blog-post.css' %}">
+{% endblock custom_css %}
+
+{% block body %}
+
+<!-- Scroll Reading Progress Bar -->
+<div id="reading-progress-bar"></div>
+
+<div class="app-container py-4">
+
+    <!-- ══ POST HEADER ══ -->
+    <header class="post-header-wrap">
+        <div class="post-breadcrumbs">
+            <a href="/">HOME</a> / <a href="/blog/">BLOG</a> / <a href="{% url 'category' post.category.name %}">{{ post.category.name|upper }}</a>
+        </div>
+        <h1 class="post-title">{{ post.title }}</h1>
+        <div class="post-meta-strip">
+            <span><i class="bi bi-person-circle"></i> {% if post.author_profile %}<a href="{% url 'author_posts' post.author_profile.slug %}" style="color:inherit; text-decoration:none;" class="author-meta-link">{{ post.display_author_name|upper }}</a>{% else %}{{ post.display_author_name|upper }}{% endif %}</span>
+            <span><i class="bi bi-calendar3"></i> {{ post.timeStamp|date:"F j, Y"|upper }}</span>
+            <span><i class="bi bi-clock"></i> {{ post.reading_time }} MIN READ</span>
+            <span><i class="bi bi-eye"></i> {{ post.views }} VIEWS</span>
+        </div>
+    </header>
+
+    <div class="row">
+        <!-- ══ MAIN READING PROSE (8 cols) ══ -->
+        <div class="col-lg-8 mb-5 mb-lg-0">
+            <!-- Highlight to Quote Toolbar -->
+            <div id="highlight-quote-toolbar" class="highlight-toolbar d-none">
+                <button type="button" class="btn-quote-selection" onclick="quoteSelectedText()">
+                    <i class="bi bi-chat-quote-fill"></i> Quote in Discussion
+                </button>
+            </div>
+
+            <!-- Cover Image -->
+            {% if post.image %}
+            <div class="post-cover-wrap">
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" decoding="async">
+            </div>
+            {% endif %}
+
+            <!-- ══ AUDIO DISPATCH NARRATOR ══ -->
+            <div class="audio-narrator-bar" id="audioNarratorBar">
+                <div class="audio-narrator-main">
+                    <div class="audio-narrator-left">
+                        <button type="button" class="audio-ctrl-btn play-btn" id="audioPlayBtn" onclick="toggleAudioNarrator()" title="Listen to dispatch">
+                            <i class="bi bi-play-fill" id="audioPlayIcon"></i>
+                        </button>
+                        <button type="button" class="audio-ctrl-btn stop-btn d-none" id="audioStopBtn" onclick="stopAudioNarrator()" title="Stop narration">
+                            <i class="bi bi-stop-fill"></i>
+                        </button>
+                        <div class="audio-meta-text">
+                            <div class="d-flex align-items-center gap-2 audio-meta-badges">
+                                <span class="audio-title-tag"><i class="bi bi-broadcast"></i> AUDIO DISPATCH</span>
+                                {% if post.has_ready_audio %}
+                                    {% if post.effective_audio_provider == 'gemini' %}
+                                    <span class="audio-neural-badge" style="background:rgba(147,51,234,0.18); color:#c084fc; border:1px solid rgba(147,51,234,0.35);"><i class="bi bi-stars"></i> Gemini AI Voice HD</span>
+                                    {% else %}
+                                    <span class="audio-neural-badge"><i class="bi bi-soundwave"></i> Indic Neural HD</span>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <span class="audio-status-label" id="audioStatusText">
+                                {% if post.has_ready_audio %}
+                                    {% if post.effective_audio_language == 'or' %}
+                                    Listen in Native Odia (ଓଡ଼ିଆ) ({% if post.effective_audio_duration %}{{ post.effective_audio_duration|floatformat:0 }}s{% else %}HD Audio{% endif %})
+                                    {% elif post.effective_audio_language == 'hi' %}
+                                    Listen in Hindi (हिन्दी) ({% if post.effective_audio_duration %}{{ post.effective_audio_duration|floatformat:0 }}s{% else %}HD Audio{% endif %})
+                                    {% else %}
+                                    Listen in Indian English ({% if post.effective_audio_duration %}{{ post.effective_audio_duration|floatformat:0 }}s{% else %}HD Audio{% endif %})
+                                    {% endif %}
+                                {% else %}
+                                Listen to dispatch (~{{ post.reading_time }} min)
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="audio-narrator-right">
+                        <div class="sound-wave-anim d-none" id="soundWaveAnim">
+                            <span></span><span></span><span></span><span></span>
+                        </div>
+                        <span class="audio-time-counter d-none" id="audioTimeDisplay">0:00 / 0:00</span>
+                        <button type="button" class="audio-speed-pill" id="audioSpeedBtn" onclick="cycleAudioSpeed()" title="Change playback rate">1.0x</button>
+                    </div>
+                </div>
+                <!-- Interactive Scrubber Timeline (for streaming MP3 audio) -->
+                <div class="audio-timeline-wrap d-none" id="audioTimelineWrap">
+                    <input type="range" class="audio-scrubber" id="audioScrubber" min="0" max="100" value="0" step="0.1" title="Seek timeline" oninput="onAudioScrubInput(this.value)" onchange="onAudioScrubChange(this.value)">
+                </div>
+            </div>
+
+            <!-- Prose Content -->
+            <article class="article-prose">
+                {{ post.content|safe }}
+            </article>
+
+            <!-- ══ KARU-WISDOM AI COMPANION ══ -->
+            <div class="karu-companion-dispatch-box my-4">
+                <div class="karu-companion-header">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="karu-companion-avatar">
+                            <i class="bi bi-stars"></i>
+                        </div>
+                        <div>
+                            <h4 class="karu-companion-title">Synthesize with Karu-Wisdom AI</h4>
+                            <p class="karu-companion-sub">Explore deep philosophical context, historical parallels, and key takeaways from this dispatch.</p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-karu-companion-launch" data-karu-ask="Explore the central themes and key insights of the dispatch '{{ post.title|escapejs }}'">
+                        <span>Consult Karu-Wisdom</span> <i class="bi bi-arrow-right"></i>
+                    </button>
+                </div>
+                <div class="karu-companion-prompts">
+                    <span class="prompts-tag"><i class="bi bi-lightning-charge"></i> Inquiries:</span>
+                    <button type="button" class="companion-prompt-chip" data-karu-ask="Summarize the core takeaways and practical lessons from '{{ post.title|escapejs }}'">
+                        📌 Core Takeaways
+                    </button>
+                    <button type="button" class="companion-prompt-chip" data-karu-ask="Explain the historical and cultural context surrounding '{{ post.title|escapejs }}'">
+                        🏛️ Historical Context
+                    </button>
+                    <button type="button" class="companion-prompt-chip" data-karu-ask="What philosophical questions does the dispatch '{{ post.title|escapejs }}' raise?">
+                        🧘 Philosophical Themes
+                    </button>
+                </div>
+            </div>
+
+            <!-- ══ AUTHOR DOSSIER SECTION ══ -->
+            {% if post.author_profile %}
+            <div class="author-dossier-card">
+                <div class="author-dossier-glow"></div>
+                <div class="author-dossier-inner">
+                    <div class="author-avatar-wrap">
+                        {% if post.author_profile.avatar %}
+                        <img src="{{ post.author_profile.avatar.url }}" alt="{{ post.author_profile.name }}" class="author-avatar-img" loading="lazy" decoding="async">
+                        {% else %}
+                        <div class="author-avatar-placeholder">
+                            {{ post.author_profile.name|slice:":1"|upper }}
+                        </div>
+                        {% endif %}
+                        {% if post.author_profile.featured %}
+                        <span class="author-badge-pill" title="Verified Contributor"><i class="bi bi-patch-check-fill"></i></span>
+                        {% endif %}
+                    </div>
+                    <div class="author-info-content">
+                        <div class="author-dossier-label">
+                            <span>AUTHOR DOSSIER</span>
+                            <span class="author-total-tag"><i class="bi bi-journal-text me-1"></i>{{ post.author_profile.posts.count }} Dispatches</span>
+                        </div>
+                        <h4 class="author-name">
+                            <a href="{% url 'author_posts' post.author_profile.slug %}">{{ post.author_profile.name }}</a>
+                        </h4>
+                        {% if post.author_profile.designation %}
+                        <div class="author-role">{{ post.author_profile.designation }}</div>
+                        {% endif %}
+                        {% if post.author_profile.bio %}
+                        <p class="author-bio">{{ post.author_profile.bio }}</p>
+                        {% endif %}
+                        <div class="author-footer-actions">
+                            <a href="{% url 'author_posts' post.author_profile.slug %}" class="author-view-all-btn">
+                                Explore Dispatches <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                            <div class="author-social-links">
+                                {% if post.author_profile.x_handle %}
+                                <a href="{% if 'http' in post.author_profile.x_handle %}{{ post.author_profile.x_handle }}{% else %}https://x.com/{{ post.author_profile.x_handle|cut:'@' }}{% endif %}" target="_blank" rel="noopener noreferrer" class="author-social-icon" title="X (Twitter)">
+                                    <i class="bi bi-twitter-x"></i>
+                                </a>
+                                {% endif %}
+                                {% if post.author_profile.linkedin %}
+                                <a href="{{ post.author_profile.linkedin }}" target="_blank" rel="noopener noreferrer" class="author-social-icon" title="LinkedIn">
+                                    <i class="bi bi-linkedin"></i>
+                                </a>
+                                {% endif %}
+                                {% if post.author_profile.website %}
+                                <a href="{{ post.author_profile.website }}" target="_blank" rel="noopener noreferrer" class="author-social-icon" title="Personal Site">
+                                    <i class="bi bi-globe"></i>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% elif post.author %}
+            <!-- Legacy / Guest Author Pill -->
+            <div class="guest-author-dossier">
+                <div class="guest-author-avatar"><i class="bi bi-feather"></i></div>
+                <div class="guest-author-meta">
+                    <span class="guest-label">CONTRIBUTING WRITER</span>
+                    <span class="guest-name">{{ post.author }}</span>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- ══ READER FREQUENCY • VIBE MATRIX ══ -->
+            <div class="reaction-dock-wrap">
+                <div class="reaction-dock-header">
+                    <span class="reaction-dock-tag"><i class="bi bi-broadcast"></i> TRANSMISSION RESONANCE</span>
+                    <span class="reaction-dock-sub">How did this dispatch hit your frequency?</span>
+                </div>
+                {% include 'blog/partials/_reaction_matrix.html' %}
+            </div>
+
+            <!-- Social Share Bar -->
+            <section class="share-bar-container">
+                <span style="font-family:var(--font-sans); font-weight:800; font-size:11.5px; letter-spacing:1.5px; color:var(--accent-green);">
+                    <i class="bi bi-share-fill me-1"></i> SHARE THIS TRANSMISSION
+                </span>
+                <div class="share-buttons-group">
+                    <button type="button" class="share-btn" onclick="shareArticleNative()" title="Share via device">
+                        <i class="bi bi-share"></i> Quick Share
+                    </button>
+                    <a href="https://api.whatsapp.com/send?text={{ post.title|urlencode }}%20{{ request.build_absolute_uri|urlencode }}" target="_blank" class="share-btn" rel="noopener">
+                        <i class="bi bi-whatsapp"></i> WhatsApp
+                    </a>
+                    <a href="https://twitter.com/intent/tweet?text={{ post.title|urlencode }}&url={{ request.build_absolute_uri|urlencode }}" target="_blank" class="share-btn" rel="noopener">
+                        <i class="bi bi-twitter-x"></i> X
+                    </a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" target="_blank" class="share-btn" rel="noopener">
+                        <i class="bi bi-facebook"></i> Facebook
+                    </a>
+                    <a href="https://t.me/share/url?url={{ request.build_absolute_uri|urlencode }}&text={{ post.title|urlencode }}" target="_blank" class="share-btn" rel="noopener">
+                        <i class="bi bi-telegram"></i> Telegram
+                    </a>
+                    <button type="button" class="share-btn" onclick="copyArticleLink()">
+                        <i class="bi bi-link-45deg"></i> <span id="copyText">Copy Link</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Comments & Discussion -->
+            <section class="comments-section">
+                <h3 style="font-family:var(--font-heading); font-size:22px; color:var(--text-main); margin-bottom:16px;">
+                    Discussion <span id="comments-count-badge" style="font-size:13px; font-family:var(--font-sans); font-weight:700; color:var(--accent-green); background:rgba(193,255,114,0.1); padding:2px 10px; border-radius:50px; margin-left:6px;">{{ comments.count }}</span>
+                </h3>
+
+                <!-- Comment Form -->
+                <div class="comment-form-wrap mb-4">
+                    <form id="main-comment-form"
+                          hx-post="{% url 'postComment' %}"
+                          hx-target="#comments-container"
+                          hx-swap="afterbegin"
+                          hx-on::after-request="if(event.detail.successful) { this.reset(); const noMsg = document.getElementById('no-comments-msg'); if(noMsg) noMsg.remove(); }">
+                        {% csrf_token %}
+                        <div class="mb-2">
+                            <textarea id="mainCommentTextarea" class="form-control" name="comment" rows="3" placeholder="Share your perspective on this dispatch..." required></textarea>
+                        </div>
+                        <input type="hidden" name="postSno" value="{{ post.sno }}">
+                        <input type="hidden" name="parentSno" value="">
+                        <button type="submit" class="comment-submit-btn" id="main-comment-submit-btn">TRANSMIT COMMENT →</button>
+                    </form>
+                </div>
+
+                <!-- Comments List -->
+                <div class="comments-list" id="comments-container">
+                    {% for comment in comments %}
+                        {% include 'blog/partials/_comment_item.html' with comment=comment post=post replyDict=replyDict liked_comments=liked_comments %}
+                    {% empty %}
+                        <p id="no-comments-msg" style="color:rgba(255,255,255,0.45); font-size:13px; font-style:italic;">No transmissions logged yet. Be the first to start the discussion.</p>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+
+        <!-- ══ STICKY READING COMPANION SIDEBAR (4 cols) ══ -->
+        <div class="col-lg-4">
+            <div class="sticky-sidebar">
+                <!-- Dynamic Table of Contents -->
+                <div id="sidebar-toc-card" class="sidebar-glass-card d-none">
+                    <h4 class="sidebar-card-title"><i class="bi bi-list-nested"></i> DISPATCH OUTLINE</h4>
+                    <nav id="toc-nav-list" class="toc-nav-wrap"></nav>
+                </div>
+
+                <!-- Karu-Wisdom AI Companion -->
+                <div class="sidebar-glass-card karu-ai-sidebar-card">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <h4 class="sidebar-card-title m-0"><i class="bi bi-stars" style="color:var(--accent-green);"></i> KARU-WISDOM AI</h4>
+                        <span class="badge" style="background:rgba(193,255,114,0.15); color:var(--accent-green); font-size:9.5px; border:1px solid rgba(193,255,114,0.3); letter-spacing:0.5px;">GUIDE</span>
+                    </div>
+                    <p class="small text-muted mb-2" style="font-size:12px; line-height:1.5;">Query our AI knowledge explorer on the deeper historical, philosophical, and astrological layers of this dispatch.</p>
+                    <button type="button" class="btn-sidebar-ask-wisdom w-100" data-karu-ask="Synthesize the key philosophical and historical themes of '{{ post.title|escapejs }}'">
+                        <i class="bi bi-cpu-fill me-1"></i> Ask About This Dispatch
+                    </button>
+                </div>
+
+                <!-- Transmission Dossier -->
+                <div class="sidebar-glass-card">
+                    <h4 class="sidebar-card-title"><i class="bi bi-fingerprint"></i> TRANSMISSION DOSSIER</h4>
+                    <div class="metric-row">
+                        <span class="metric-label">SECTOR</span>
+                        <span class="metric-val text-uppercase" style="color:var(--accent-green);">{{ post.category.name }}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">READING TIME</span>
+                        <span class="metric-val">{{ post.reading_time }} MINUTES</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">VIEW VOLUME</span>
+                        <span class="metric-val">{{ post.views }} TRANSMISSIONS</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">DISPATCH CODE</span>
+                        <span class="metric-val" style="font-family:monospace; font-size:11px;">#{{ post.sno|stringformat:"04d" }}</span>
+                    </div>
+
+                    {% if request.user.is_authenticated %}
+                        {% include 'home/partials/_bookmark_button_sidebar.html' with post=post is_saved=is_saved %}
+                    {% endif %}
+                </div>
+
+                <!-- Related in Sector -->
+                {% if related_posts %}
+                <div class="sidebar-glass-card">
+                    <h4 class="sidebar-card-title"><i class="bi bi-intersect"></i> SECTOR RESONANCES</h4>
+                    {% for item in related_posts %}
+                    <div class="related-item">
+                        <div class="related-thumb">
+                            {% if item.image %}
+                            <img src="{{ item.image.url }}" alt="{{ item.title }}" loading="lazy" decoding="async">
+                            {% else %}
+                            <div style="background:#0c1936; width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:12px;">✦</div>
+                            {% endif %}
+                        </div>
+                        <div class="flex-grow-1">
+                            <h5 class="related-info-title">
+                                <a href="/blog/{{ item.slug }}/">{{ item.title }}</a>
+                            </h5>
+                            <div class="related-meta">
+                                <span>{{ item.reading_time }} MIN READ</span>
+                                <span>•</span>
+                                <span>{{ item.timeStamp|date:"M j, Y" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Quick Navigation -->
+                <div class="text-center pt-2">
+                    <a href="/blog/" style="font-family:var(--font-sans); font-weight:700; font-size:12px; letter-spacing:1px; color:var(--accent-green); text-decoration:none;">
+                        ← RETURN TO ARCHIVE REPOSITORY
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock body %}
+
+{% block js %}
+<script>
+window.KSPEAKS_POST_CONFIG = {
+    postSno: "{{ post.sno }}",
+    postTitle: "{{ post.title|escapejs }}",
+    postAuthor: "{{ post.display_author_name|escapejs }}",
+    readingTime: "{{ post.reading_time|default:'3' }}",
+    hasServerAudio: "{% if post.has_ready_audio %}true{% else %}false{% endif %}" === "true",
+    audioStreamUrl: "{% if post.has_ready_audio %}{% url 'stream_dispatch_audio' post.sno %}?v={{ post.effective_audio_provider }}_{{ post.audio_updated_at|date:'U'|default:post.audio_file_size }}{% endif %}",
+    audioDuration: parseFloat("{{ post.effective_audio_duration|default:0 }}") || 0,
+    audioVoice: "{{ post.effective_audio_voice|default:'en-IN-NeerjaExpressiveNeural'|escapejs }}"
+};
+</script>
+<script src="{% static 'js/modules/blog-post.js' %}"></script>
+{% endblock js %}

@@ -1,0 +1,57 @@
+{
+  "name": "Karuwaki Speaks Web3.0",
+  "short_name": "KSPEAK$",
+  "description": "Odisha's Premier Cultural Intelligence, AI Magazine & Web3 Dispatches",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#010a24",
+  "theme_color": "#010a24",
+  "categories": ["magazines", "news", "lifestyle", "astrology"],
+  "icons": [
+    {
+      "src": "/Karuwaki/static/web3/fav-icon/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/Karuwaki/static/web3/fav-icon/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/Karuwaki/static/web3/fav-icon/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dispatches Archive",
+      "short_name": "Blog",
+      "url": "/blog/",
+      "icons": [{ "src": "/Karuwaki/static/web3/fav-icon/favicon-32x32.png", "sizes": "32x32" }]
+    },
+    {
+      "name": "AI Aided Magazine",
+      "short_name": "Magazine",
+      "url": "/ai-magazine/",
+      "icons": [{ "src": "/Karuwaki/static/web3/fav-icon/favicon-32x32.png", "sizes": "32x32" }]
+    },
+    {
+      "name": "Athereal Astro",
+      "short_name": "Athereal",
+      "url": "/athereal/",
+      "icons": [{ "src": "/Karuwaki/static/web3/fav-icon/favicon-32x32.png", "sizes": "32x32" }]
+    },
+    {
+      "name": "Offline Vault",
+      "short_name": "Vault",
+      "url": "/offline/",
+      "icons": [{ "src": "/Karuwaki/static/web3/fav-icon/favicon-32x32.png", "sizes": "32x32" }]
+    }
+  ]
+}

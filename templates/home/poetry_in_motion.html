@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Poetry In Motion | Karuwaki Speaks{% endblock title %}
+
+{% block custom_css %}
+<!-- Dedicated Typography for Literary Elegance -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/pages/poetry.css' %}">
+{% endblock custom_css %}
+
+{% block body %}
+<div class="poetry-motion-page">
+    <div class="poetry-ambient-orb"></div>
+
+    <div class="poetry-center-wrapper">
+        <div class="poetry-master-card">
+
+            <!-- Pill Badge -->
+            <div class="poetry-badge-pill">
+                <span class="pulse-dot"></span>
+                <span>AUDIO BROADCAST &middot; KALINGA LORE</span>
+            </div>
+
+            <!-- Title & Subtitle -->
+            <h1 class="poetry-hero-title">
+                POETRY IN <span>MOTION</span>
+            </h1>
+            <p class="poetry-hero-desc">
+                "Where rhythmic verses awaken the soul, language weaves through ancient corridors, and every spoken word resonates with timeless heritage."
+            </p>
+
+            <!-- Centered Audio Suite -->
+            <div class="audio-suite-card">
+                <div class="audio-suite-header">
+                    <span class="audio-status-indicator">
+                        <i class="bi bi-broadcast"></i> ANCHOR &middot; OFFICIAL STREAM
+                    </span>
+                    <span><i class="bi bi-clock"></i> KARUWAKI SPEAKS AUDIO</span>
+                </div>
+
+                <!-- Official Anchor FM Episode Embed -->
+                <div class="anchor-frame-wrap">
+                    <iframe 
+                        src="https://anchor.fm/karuwakispeaks/embed/episodes/Poetry-in-motion-e1dccdl" 
+                        height="165" 
+                        width="100%" 
+                        frameborder="0" 
+                        scrolling="no" 
+                        allow="autoplay">
+                    </iframe>
+                </div>
+            </div>
+
+            <!-- Centered Action Buttons -->
+            <div class="poetry-button-row">
+                <a href="https://open.spotify.com/show/7lpmQsOFtjVi4QgSLo1lml" target="_blank" rel="noopener" class="p-btn p-btn-spotify" title="Listen on Spotify">
+                    <i class="bi bi-spotify" style="font-size:15px;"></i> Listen on Spotify
+                </a>
+                <a href="https://api.whatsapp.com/send?text={{ 'Listen to Poetry in Motion on Karuwaki Speaks: https://www.karuwakispeaks.com/poetry-in-motion/'|urlencode }}" target="_blank" rel="noopener" class="p-btn p-btn-whatsapp" title="Share via WhatsApp">
+                    <i class="bi bi-whatsapp" style="font-size:15px;"></i> Share Episode
+                </a>
+                <button type="button" class="p-btn p-btn-copy" onclick="copyEpisodeLink()" title="Copy Link to Clipboard">
+                    <i class="bi bi-link-45deg" style="font-size:16px;"></i> Copy Link
+                </button>
+            </div>
+
+            <!-- Centered Stanza Quote -->
+            <div class="poetry-stanza-box">
+                <div class="stanza-quote-mark">✦</div>
+                <div class="stanza-verse-text">
+                    "Upon the banks of Daya, where the scarlet waters wept,<br>
+                    A sacred dawn arose beneath the Dharma bell."
+                </div>
+                <div class="stanza-verse-author">
+                    &mdash; The Song of Karuwaki &middot; Spoken Dispatch
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Centered Floating Toast -->
+    <div class="poetry-copy-toast" id="copyToast">
+        <i class="bi bi-check-circle-fill" style="color:#f59e0b;"></i>
+        <span>Link copied to clipboard!</span>
+    </div>
+</div>
+{% endblock body %}
+
+{% block js %}
+<script src="{% static 'js/modules/poetry.js' %}"></script>
+{% endblock js %}

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Editorial Desk | Karuwaki Speaks Web3.0{% endblock title %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'css/pages/contact.css' %}">
+{% endblock custom_css %}
+
+{% block body %}
+<div class="contact-page-wrap">
+
+    <!-- ══ BREADCRUMBS ══ -->
+    <div class="contact-breadcrumbs">
+        <a href="/">HOME</a> / <span>EDITORIAL INQUIRY DESK</span>
+    </div>
+
+    <div class="row g-4">
+        <!-- ══ LEFT COLUMN: EDITORIAL DESK INFO ══ -->
+        <div class="col-lg-5">
+            <div class="contact-desk-card">
+                <div>
+                    <div class="contact-desk-badge">
+                        <i class="bi bi-broadcast-pin"></i> DIRECT DISPATCH TRANSMISSION
+                    </div>
+                    <h1 class="contact-desk-title">
+                        Connect with the Karuwaki Council
+                    </h1>
+                    <p class="contact-desk-prose">
+                        Have an archival discovery, literary submission, research collaboration, or technical feedback? Our editorial desk welcomes authentic voices and scholarly correspondence.
+                    </p>
+
+                    <div class="contact-channels-list">
+                        <div class="contact-channel-item">
+                            <div class="contact-channel-icon">
+                                <i class="bi bi-envelope-at-fill"></i>
+                            </div>
+                            <div>
+                                <div class="contact-channel-label">Editorial Inquiries</div>
+                                <a href="mailto:admin@karuwakispeaks.com" class="contact-channel-val">admin@karuwakispeaks.com</a>
+                            </div>
+                        </div>
+
+                        <div class="contact-channel-item">
+                            <div class="contact-channel-icon">
+                                <i class="bi bi-journal-richtext"></i>
+                            </div>
+                            <div>
+                                <div class="contact-channel-label">Submissions &amp; Dossiers</div>
+                                <a href="mailto:editor@karuwakispeaks.com" class="contact-channel-val">editor@karuwakispeaks.com</a>
+                            </div>
+                        </div>
+
+                        <div class="contact-channel-item">
+                            <div class="contact-channel-icon">
+                                <i class="bi bi-geo-alt-fill"></i>
+                            </div>
+                            <div>
+                                <div class="contact-channel-label">Headquarters</div>
+                                <div class="contact-channel-val" style="font-size:14px;">Bhubaneswar, Odisha, India</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-response-sla">
+                    <i class="bi bi-clock-history"></i>
+                    <span>Typical editorial response turnaround: <strong>24 to 48 hours</strong>.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══ RIGHT COLUMN: CONTACT FORM ══ -->
+        <div class="col-lg-7">
+            {% include 'home/partials/_contact_form.html' %}
+        </div>
+    </div>
+
+</div>
+{% endblock body %}

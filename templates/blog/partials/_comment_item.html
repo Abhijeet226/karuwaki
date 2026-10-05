@@ -1,0 +1,91 @@
+{% load humanize %}
+{% load extras %}
+
+<div class="comment-item" id="comment-node-{{ comment.sno }}">
+    <div class="d-flex align-items-start gap-3" style="gap:12px;">
+        <div class="comment-user-avatar">
+            {{ comment.user.username|first|upper }}
+        </div>
+        <div class="flex-grow-1">
+            <div class="d-flex align-items-center flex-wrap gap-1">
+                <span class="comment-user-name">{{ comment.user.username }}</span>
+                {% if comment.user.username|lower == post.author|lower or comment.user.is_staff %}
+                <span class="author-pill-badge"><i class="bi bi-patch-check-fill"></i> AUTHOR</span>
+                {% endif %}
+                <span class="comment-time">{{ comment.timestamp|naturaltime }}</span>
+                <span class="comment-edited-tag {% if not comment.is_edited %}d-none{% endif %}" id="edited-tag-{{ comment.sno }}">(edited)</span>
+            </div>
+
+            {% if comment.is_deleted %}
+            <div class="comment-body-text text-muted fst-italic py-1" id="comment-text-{{ comment.sno }}">
+                <i class="bi bi-slash-circle me-1"></i> [This perspective was removed by the author]
+            </div>
+            {% else %}
+            <div class="comment-body-text" id="comment-text-{{ comment.sno }}">{{ comment.comment }}</div>
+
+            <div class="comment-actions-bar" id="actions-bar-{{ comment.sno }}">
+                <!-- Resonate Button -->
+                {% include 'blog/partials/_resonate_button.html' with comment=comment liked_comments=liked_comments %}
+
+                <!-- Reply Button -->
+                <button class="comment-action-btn reply-btn" type="button" data-bs-toggle="collapse" data-bs-target="#replyBox{{ comment.sno }}" aria-expanded="false">
+                    <i class="bi bi-reply-fill"></i> Reply
+                </button>
+
+                {% if request.user == comment.user or request.user.is_staff %}
+                <!-- Edit Button -->
+                <button type="button" class="comment-action-btn edit-btn"
+                        hx-get="{% url 'editComment' %}?comment_sno={{ comment.sno }}"
+                        hx-target="#comment-node-{{ comment.sno }}"
+                        hx-swap="outerHTML"
+                        title="Edit perspective">
+                    <i class="bi bi-pencil-square"></i> Edit
+                </button>
+
+                <!-- Delete Button -->
+                <button type="button" class="comment-action-btn delete-btn"
+                        id="del-btn-{{ comment.sno }}"
+                        hx-post="{% url 'deleteComment' %}"
+                        hx-vals='{"comment_sno": "{{ comment.sno }}"}'
+                        hx-confirm="Are you sure you want to remove this perspective?"
+                        hx-target="#comment-node-{{ comment.sno }}"
+                        hx-swap="outerHTML swap:0.3s"
+                        title="Delete perspective">
+                    <i class="bi bi-trash3"></i> Delete
+                </button>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- Reply Form Collapse -->
+            <div class="collapse mt-3" id="replyBox{{ comment.sno }}">
+                <form hx-post="{% url 'postComment' %}"
+                      hx-target="#replies-list-{{ comment.sno }}"
+                      hx-swap="beforeend"
+                      hx-on::after-request="if(event.detail.successful) { this.reset(); const c = bootstrap.Collapse.getInstance(document.getElementById('replyBox{{ comment.sno }}')); if(c) c.hide(); }"
+                      class="p-3" style="background: rgba(255,255,255,0.03); border-radius: 10px; border: 1px solid var(--border-card);">
+                    {% csrf_token %}
+                    <div class="mb-2">
+                        <input type="text" class="form-control" name="comment" required placeholder="Write your reply...">
+                        <input type="hidden" name="parentSno" value="{{ comment.sno }}">
+                        <input type="hidden" name="postSno" value="{{ post.sno }}">
+                    </div>
+                    <button type="submit" class="comment-submit-btn" style="padding: 5px 15px; font-size: 11px;">SEND REPLY</button>
+                </form>
+            </div>
+
+            <!-- Nested Replies List -->
+            <div id="replies-list-{{ comment.sno }}" class="{% if replyDict and replyDict|get_val:comment.sno %}mt-3 ps-3{% endif %}" style="border-left: 2px solid rgba(255,255,255,0.1);">
+                {% if replyDict %}
+                    {% for reply in replyDict|get_val:comment.sno %}
+                        {% include 'blog/partials/_reply_item.html' with reply=reply post=post liked_comments=liked_comments %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% if oob_badge %}
+    <span id="comments-count-badge" hx-swap-oob="true" style="font-size:13px; font-family:var(--font-sans); font-weight:700; color:var(--accent-green); background:rgba(193,255,114,0.1); padding:2px 10px; border-radius:50px; margin-left:6px;">{{ total_comments }}</span>
+    {% endif %}
+</div>

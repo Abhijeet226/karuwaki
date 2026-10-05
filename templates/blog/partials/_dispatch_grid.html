@@ -1,0 +1,98 @@
+{% load extras %}
+
+<div id="dispatches-grid-wrap">
+    <div class="row" id="archiveDispatchesRow">
+        {% for post in page_obj %}
+        <!-- Skip lead story on first page only if not actively querying or filtering -->
+        {% if page_obj.number == 1 and forloop.first and not query and not selected_cat %}
+        {% else %}
+        <div class="col-lg-4 col-md-6 mb-4 dispatch-card-col">
+            <div class="grid-card">
+                <div class="grid-img-wrap">
+                    {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}" loading="lazy" decoding="async">
+                    {% else %}
+                    <div style="background:#0c1936; width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#fff;">✦</div>
+                    {% endif %}
+                    <span class="grid-cat-pill">{{ post.category.name|upper }}</span>
+                    {% if request.user.is_authenticated %}
+                        {% if post.sno in saved_ids %}
+                            {% include 'home/partials/_bookmark_button.html' with post=post is_saved=True %}
+                        {% else %}
+                            {% include 'home/partials/_bookmark_button.html' with post=post is_saved=False %}
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="grid-card-body">
+                    <h3 class="grid-card-title">
+                        <a href="/blog/{{ post.slug }}/">{{ post.title }}</a>
+                    </h3>
+                    <p class="grid-card-excerpt">
+                        {{ post.excerpt|default:post.content|clean_excerpt:18 }}
+                    </p>
+                    <div class="grid-card-footer">
+                        <span style="display:inline-flex; align-items:center; gap:5px; max-width:65%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                            {% if post.author_profile %}
+                            <a href="{% url 'author_posts' post.author_profile.slug %}" style="color:inherit; text-decoration:none; display:inline-flex; align-items:center; gap:4px;" title="{{ post.display_author_name }}">
+                                <i class="bi bi-person-circle" style="color:var(--accent-green);"></i> {{ post.display_author_name }}
+                            </a>
+                            {% else %}
+                            <span><i class="bi bi-person"></i> {{ post.display_author_name }}</span>
+                            {% endif %}
+                        </span>
+                        <a href="/blog/{{ post.slug }}/" class="grid-read-link">READ →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% empty %}
+        <div class="col-12 py-5 text-center">
+            <i class="bi bi-search" style="font-size:2.5rem; color:var(--accent-green); opacity:0.8;"></i>
+            <h4 class="mt-3" style="font-family:var(--font-heading); color:var(--text-main);">No Matching Dispatches</h4>
+            <p style="color:var(--text-secondary); font-size:13.5px; max-width:400px; margin:0 auto;">
+                {% if query %}
+                No dispatches found matching "{{ query }}".
+                {% elif selected_cat %}
+                No dispatches found in category "{{ selected_cat }}".
+                {% else %}
+                No published dispatches available.
+                {% endif %}
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- ══ PAGINATION ══ -->
+    {% if page_obj.has_other_pages %}
+    <div class="pagination-wrap">
+        {% if page_obj.has_previous %}
+        <a class="page-link-custom"
+           hx-get="{% url 'bloghome' %}?page={{ page_obj.previous_page_number }}{% if query %}&query={{ query|urlencode }}{% endif %}{% if selected_cat %}&cat={{ selected_cat|urlencode }}{% endif %}"
+           hx-target="#dispatches-grid-wrap"
+           hx-indicator="#archive-search-spinner"
+           hx-push-url="true">‹ PREV</a>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+            <span class="page-link-custom active">{{ num }}</span>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <a class="page-link-custom"
+               hx-get="{% url 'bloghome' %}?page={{ num }}{% if query %}&query={{ query|urlencode }}{% endif %}{% if selected_cat %}&cat={{ selected_cat|urlencode }}{% endif %}"
+               hx-target="#dispatches-grid-wrap"
+               hx-indicator="#archive-search-spinner"
+               hx-push-url="true">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <a class="page-link-custom"
+           hx-get="{% url 'bloghome' %}?page={{ page_obj.next_page_number }}{% if query %}&query={{ query|urlencode }}{% endif %}{% if selected_cat %}&cat={{ selected_cat|urlencode }}{% endif %}"
+           hx-target="#dispatches-grid-wrap"
+           hx-indicator="#archive-search-spinner"
+           hx-push-url="true">NEXT ›</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>

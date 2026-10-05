@@ -1,0 +1,398 @@
+/**
+ * Karuwaki Web3 Poetry In Motion Styles
+ * Royal centered audio sanctuary, glowing ambient orb, master card,
+ * Spotify / Anchor FM player frame, and action pill buttons.
+ */
+
+.poetry-motion-page {
+    position: relative;
+    min-height: calc(100vh - 76px);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 16px 90px;
+    background: radial-gradient(circle at 50% 20%, rgba(245, 158, 11, 0.1) 0%, transparent 60%),
+                radial-gradient(circle at 50% 80%, rgba(0, 240, 255, 0.05) 0%, transparent 65%),
+                #030712;
+    overflow: hidden;
+}
+
+/* Centered Glowing Orb */
+.poetry-ambient-orb {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    height: 450px;
+    background: radial-gradient(ellipse, rgba(245, 158, 11, 0.15) 0%, rgba(12, 74, 110, 0.08) 45%, transparent 75%);
+    filter: blur(60px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Centered Wrapper */
+.poetry-center-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Master Card */
+.poetry-master-card {
+    width: 100%;
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.9) 0%, rgba(10, 16, 32, 0.98) 100%);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: 24px;
+    padding: 48px 40px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85),
+                0 0 35px rgba(245, 158, 11, 0.12),
+                inset 0 1px 1px rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
+}
+
+@media (max-width: 576px) {
+    .poetry-master-card {
+        padding: 30px 18px;
+        border-radius: 18px;
+    }
+}
+
+/* Royal Pill Badge */
+.poetry-badge-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    padding: 7px 20px;
+    border-radius: 999px;
+    margin: 0 auto 22px;
+    box-shadow: 0 0 14px rgba(245, 158, 11, 0.15);
+}
+
+.poetry-badge-pill .pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #f59e0b;
+    box-shadow: 0 0 8px #f59e0b;
+    animation: pulseAnimation 2s infinite ease-in-out;
+}
+
+@keyframes pulseAnimation {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.6; }
+}
+
+/* Centered Majestic Title */
+.poetry-hero-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: #ffffff;
+    margin: 0 auto 14px;
+    line-height: 1.15;
+    text-align: center;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+}
+
+.poetry-hero-title span {
+    background: linear-gradient(135deg, #fffbeb 0%, #fcd34d 40%, #f59e0b 80%, #d97706 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Subtitle Description */
+.poetry-hero-desc {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+    font-style: italic;
+    color: #cbd5e1;
+    max-width: 620px;
+    margin: 0 auto 32px;
+    line-height: 1.65;
+    text-align: center;
+}
+
+/* ── AUDIO SUITE CONTAINER (PERFECTLY CENTERED) ── */
+.audio-suite-card {
+    width: 100%;
+    max-width: 760px;
+    background: rgba(3, 7, 18, 0.8);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    border-radius: 18px;
+    padding: 24px;
+    margin: 0 auto 28px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.audio-suite-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: #94a3b8;
+    text-transform: uppercase;
+}
+
+.audio-status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #00f0ff;
+    font-weight: 600;
+}
+
+/* Anchor FM Iframe Shell */
+.anchor-frame-wrap {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #000000;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.anchor-frame-wrap iframe {
+    display: block;
+    width: 100%;
+    height: 165px;
+    border: none;
+    outline: none;
+}
+
+/* ── CENTERED ACTION SHORTCUTS ── */
+.poetry-button-row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 0 auto 32px;
+}
+
+.p-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 11px 24px;
+    border-radius: 999px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.p-btn-spotify {
+    background: #1DB954;
+    color: #000000;
+    border: 1px solid #1DB954;
+}
+
+.p-btn-spotify:hover {
+    background: #1ed760;
+    color: #000000;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(29, 185, 84, 0.4);
+}
+
+.p-btn-whatsapp {
+    background: rgba(37, 211, 102, 0.12);
+    color: #25D366;
+    border: 1px solid rgba(37, 211, 102, 0.4);
+}
+
+.p-btn-whatsapp:hover {
+    background: #25D366;
+    color: #000000;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+}
+
+.p-btn-copy {
+    background: rgba(255, 255, 255, 0.06);
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.p-btn-copy:hover {
+    background: rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.35);
+    transform: translateY(-2px);
+}
+
+/* ── INSPIRATIONAL STANZA QUOTE (CENTERED) ── */
+.poetry-stanza-box {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 24px 28px;
+    background: rgba(245, 158, 11, 0.04);
+    border: 1px dashed rgba(245, 158, 11, 0.25);
+    border-radius: 14px;
+    text-align: center;
+}
+
+.stanza-quote-mark {
+    font-family: 'Cinzel', serif;
+    font-size: 2.2rem;
+    line-height: 1;
+    color: #f59e0b;
+    margin-bottom: 6px;
+    opacity: 0.6;
+}
+
+.stanza-verse-text {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.25rem;
+    line-height: 1.7;
+    font-style: italic;
+    color: #f1f5f9;
+    margin-bottom: 10px;
+}
+
+.stanza-verse-author {
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: #94a3b8;
+    text-transform: uppercase;
+}
+
+/* ── COPY TOAST ── */
+.poetry-copy-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #0f172a;
+    color: #ffffff;
+    border: 1px solid #f59e0b;
+    padding: 12px 28px;
+    border-radius: 999px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 20px rgba(245, 158, 11, 0.25);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 9999;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    pointer-events: none;
+}
+
+.poetry-copy-toast.active {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* ══════════════════════════════════════
+   LIGHT MODE OVERRIDES FOR POETRY IN MOTION
+══════════════════════════════════════ */
+[data-theme="light"] .poetry-motion-page {
+    background: radial-gradient(circle at 50% 20%, rgba(245, 158, 11, 0.08) 0%, transparent 60%),
+                radial-gradient(circle at 50% 80%, rgba(5, 150, 105, 0.04) 0%, transparent 65%),
+                #f8fafc !important;
+}
+
+[data-theme="light"] .poetry-ambient-orb {
+    background: radial-gradient(ellipse, rgba(245, 158, 11, 0.1) 0%, rgba(14, 165, 233, 0.05) 45%, transparent 75%);
+}
+
+[data-theme="light"] .poetry-master-card {
+    background: #ffffff !important;
+    border: 1px solid rgba(245, 158, 11, 0.35) !important;
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08), 0 0 30px rgba(245, 158, 11, 0.08) !important;
+}
+
+[data-theme="light"] .poetry-hero-title {
+    color: #0f172a !important;
+}
+
+[data-theme="light"] .poetry-hero-desc {
+    color: #475569 !important;
+}
+
+[data-theme="light"] .audio-suite-card {
+    background: #f8fafc !important;
+    border: 1px solid rgba(15, 23, 42, 0.1) !important;
+}
+
+[data-theme="light"] .audio-suite-header {
+    border-bottom-color: rgba(15, 23, 42, 0.08) !important;
+    color: #64748b !important;
+}
+
+[data-theme="light"] .p-btn-copy {
+    background: #f1f5f9 !important;
+    color: #0f172a !important;
+    border-color: #cbd5e1 !important;
+}
+
+[data-theme="light"] .p-btn-copy:hover {
+    background: #e2e8f0 !important;
+    border-color: #94a3b8 !important;
+    color: #0f172a !important;
+}
+
+[data-theme="light"] .poetry-stanza-box {
+    background: rgba(245, 158, 11, 0.06) !important;
+    border-color: rgba(245, 158, 11, 0.35) !important;
+}
+
+[data-theme="light"] .stanza-verse-text {
+    color: #0f172a !important;
+}
+
+[data-theme="light"] .stanza-verse-author {
+    color: #64748b !important;
+}
+
+[data-theme="light"] .poetry-copy-toast {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border-color: #f59e0b !important;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15), 0 0 20px rgba(245, 158, 11, 0.2) !important;
+}

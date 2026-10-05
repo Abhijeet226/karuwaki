@@ -1,0 +1,308 @@
+/**
+ * Karuwaki Web3 Core Components
+ * Reading progress bar, back to top button, theme switcher modal, and base dialogs.
+ */
+
+/* ── GLOBAL READING PROGRESS BAR ── */
+.global-reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent-green, #00f0ff) 0%, #f59e0b 50%, #10b981 100%);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+    z-index: 100000;
+    transition: width 0.08s linear;
+    pointer-events: none;
+}
+
+/* ── FLOATING BACK TO TOP BUTTON ── */
+.back-to-top-btn {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(10, 19, 40, 0.85);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    color: #f59e0b;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 15px rgba(245, 158, 11, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 1040;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.9);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    outline: none;
+}
+
+.back-to-top-btn.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.back-to-top-btn:hover {
+    background: #f59e0b;
+    color: #000000;
+    border-color: #f59e0b;
+    box-shadow: 0 0 25px rgba(245, 158, 11, 0.6);
+    transform: translateY(-3px) scale(1.05);
+}
+
+[data-theme="light"] .back-to-top-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(245, 158, 11, 0.4);
+    color: #d97706;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .back-to-top-btn:hover {
+    background: #f59e0b;
+    color: #ffffff;
+}
+
+/* ── THEME SWITCHER DOCK & DROPDOWN ── */
+.theme-switch-dropdown {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-theme-toggle {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+}
+
+.btn-theme-toggle:hover {
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+    transform: translateY(-1px);
+}
+
+.theme-menu-dropdown {
+    min-width: 180px;
+    padding: 6px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    box-shadow: var(--card-shadow);
+    margin-top: 8px !important;
+    top: 100% !important;
+    bottom: auto !important;
+    z-index: 1060;
+}
+
+.theme-option-btn {
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-family: var(--font-stencil);
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--text-primary);
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.theme-option-btn:hover {
+    background: var(--bg-elevated);
+    color: var(--accent-green);
+}
+
+.theme-option-btn.active {
+    color: var(--accent-green);
+    font-weight: 900;
+}
+
+/* ── LIGHT MODE OVERRIDES FOR THEME TOGGLE ── */
+[data-theme="light"] .btn-theme-toggle {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #0f172a;
+}
+
+[data-theme="light"] .btn-theme-toggle:hover {
+    border-color: #059669;
+    color: #059669;
+}
+
+[data-theme="light"] .theme-menu-dropdown {
+    background: #ffffff !important;
+    border: 1px solid rgba(15, 23, 42, 0.12) !important;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12) !important;
+}
+
+[data-theme="light"] .theme-option-btn {
+    color: #334155;
+}
+
+[data-theme="light"] .theme-option-btn:hover {
+    background: #f1f5f9;
+    color: #059669;
+}
+
+[data-theme="light"] .theme-option-btn.active {
+    color: #059669;
+    background: rgba(5, 150, 105, 0.08);
+}
+
+/* ── MODAL REFINEMENTS ── */
+.modal-content {
+    background: rgba(4, 14, 42, 0.97);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(193,255,114,0.15);
+    border-radius: 14px;
+    color: #fff;
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.modal-title {
+    font-family: var(--font-stencil);
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: var(--accent-green);
+}
+
+.modal-body label {
+    font-family: var(--font-stencil);
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.7);
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.modal-body .form-control {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #fff;
+    border-radius: 8px;
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.modal-body .form-control:focus {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(193,255,114,0.5);
+    box-shadow: 0 0 0 0.15rem rgba(193,255,114,0.15);
+    color: #fff;
+}
+
+.modal-body .form-control::placeholder {
+    color: rgba(255,255,255,0.3);
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+button.close {
+    color: rgba(255,255,255,0.6);
+    text-shadow: none;
+    opacity: 1;
+    transition: color 0.2s, transform 0.2s;
+}
+
+button.close:hover {
+    color: var(--accent-pink);
+    transform: rotate(90deg);
+}
+
+/* ── TRANSMISSION TOAST NOTIFICATIONS (GLOBAL) ── */
+#transmission-toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.transmission-toast {
+    pointer-events: auto;
+    background: rgba(1, 10, 36, 0.95);
+    border: 1px solid var(--border-card);
+    border-left: 4px solid var(--accent-green);
+    color: var(--text-main);
+    padding: 12px 18px;
+    border-radius: var(--radius-md);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(16px);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 260px;
+    max-width: 380px;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transmission-toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.transmission-toast.toast-error {
+    border-left-color: #ff5c5c;
+}
+
+.transmission-toast.toast-warning {
+    border-left-color: #ffb703;
+}
+
+.transmission-toast.toast-success {
+    border-left-color: var(--accent-green);
+}
+
+.transmission-toast.toast-info {
+    border-left-color: #38bdf8;
+}
+
+[data-theme="light"] .transmission-toast {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(0, 0, 0, 0.1);
+    color: #0f172a;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* ── HTMX LOADING INDICATORS ── */
+.htmx-indicator {
+    opacity: 0;
+    transition: opacity 200ms ease-in;
+}
+.htmx-request .htmx-indicator,
+.htmx-request.htmx-indicator {
+    opacity: 1;
+}

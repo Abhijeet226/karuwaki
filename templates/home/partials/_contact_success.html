@@ -1,0 +1,18 @@
+<div class="contact-form-card text-center py-5" id="contact-form-container" style="background: rgba(193, 255, 114, 0.03); border: 1px solid rgba(193, 255, 114, 0.3);">
+    <div style="width: 64px; height: 64px; border-radius: 50%; background: rgba(193, 255, 114, 0.12); border: 1px solid var(--accent-green); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 28px; color: var(--accent-green);">
+        <i class="bi bi-check-lg"></i>
+    </div>
+    <h2 class="contact-form-title" style="color: var(--accent-green);">Transmission Received</h2>
+    <p class="contact-form-subtitle mb-4" style="max-width: 480px; margin: 0 auto 24px;">
+        Thank you, <strong>{{ name }}</strong>. Your dossier has been logged with the Karuwaki Editorial Desk. Our curators will review your correspondence within 24 to 48 hours.
+    </p>
+    <div>
+        <button type="button" class="btn btn-outline-success"
+                hx-get="{% url 'contact' %}?new=1"
+                hx-target="#contact-form-container"
+                hx-swap="outerHTML"
+                style="font-family: var(--font-sans); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; padding: 10px 24px; border-radius: 50px;">
+            <i class="bi bi-arrow-repeat me-1"></i> SEND ANOTHER INQUIRY
+        </button>
+    </div>
+</div>

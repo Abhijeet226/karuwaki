@@ -1,0 +1,44 @@
+<div class="contact-form-card" id="contact-form-container">
+    <h2 class="contact-form-title">Send Dispatch Inquiry</h2>
+    <p class="contact-form-subtitle">Fill in the parameters below to initiate direct correspondence.</p>
+
+    {% if error %}
+    <div class="alert alert-danger d-flex align-items-center mb-3" style="background: rgba(255, 92, 92, 0.12); border: 1px solid rgba(255, 92, 92, 0.35); color: #ff8585; border-radius: 8px; font-size: 13px;">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <div>{{ error }}</div>
+    </div>
+    {% endif %}
+
+    <form hx-post="{% url 'contact' %}"
+          hx-target="#contact-form-container"
+          hx-swap="outerHTML"
+          hx-indicator="#contact-spinner">
+        {% csrf_token %}
+
+        <div class="contact-form-group">
+            <label for="name" class="contact-label">Your Name</label>
+            <input type="text" class="contact-control" id="name" name="name" value="{{ values.name|default:'' }}" placeholder="Enter your full name" required autocomplete="name">
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-6 contact-form-group">
+                <label for="email" class="contact-label">Email Address</label>
+                <input type="email" class="contact-control" id="email" name="email" value="{{ values.email|default:'' }}" placeholder="you@domain.com" required autocomplete="email">
+            </div>
+            <div class="col-md-6 contact-form-group">
+                <label for="phone" class="contact-label">Phone / Signal (Optional)</label>
+                <input type="tel" class="contact-control" id="phone" name="phone" value="{{ values.phone|default:'' }}" placeholder="+91 98765 43210" autocomplete="tel">
+            </div>
+        </div>
+
+        <div class="contact-form-group">
+            <label for="content" class="contact-label">Inquiry or Submission Details</label>
+            <textarea class="contact-control" name="content" id="content" rows="5" minlength="8" placeholder="Outline your submission proposal, inquiry, or research dispatch..." required>{{ values.content|default:'' }}</textarea>
+        </div>
+
+        <button type="submit" class="btn-contact-submit d-flex align-items-center justify-content-center gap-2">
+            <span id="contact-spinner" class="spinner-border spinner-border-sm htmx-indicator" role="status"></span>
+            <i class="bi bi-send-fill"></i> TRANSMIT INQUIRY
+        </button>
+    </form>
+</div>

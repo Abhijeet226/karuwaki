@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load extras %}
+
+{% block title %}Articles &amp; Archives | KSPEAK$ WEB3.0{% endblock title %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'css/pages/blog-archive.css' %}">
+{% endblock custom_css %}
+
+{% block body %}
+<div class="app-container">
+
+    <!-- ══ COMPACT HEADER ══ -->
+    <div class="blog-header-row d-flex flex-column flex-md-row align-items-md-end justify-content-between">
+        <div>
+            <span class="blog-badge-tag">EDITORIAL ARCHIVE · KSPEAK$</span>
+            <h1 class="blog-main-heading">Karuwaki Dispatches</h1>
+        </div>
+        <div class="blog-meta-counter text-md-end mt-2 mt-md-0">
+            <i class="bi bi-journal-text text-success me-1"></i> {{ allPosts.count }} ARTICLES INDEXED
+        </div>
+    </div>
+
+    <!-- ══ CATEGORY PILLS STRIP ══ -->
+    {% if category_menu %}
+    <div class="cat-strip-wrap">
+        <a href="/blog/"
+           hx-get="{% url 'bloghome' %}"
+           hx-target="#dispatches-grid-wrap"
+           hx-push-url="true"
+           class="cat-pill-sm {% if not selected_cat %}active{% endif %}">ALL DISPATCHES</a>
+        {% for cat in category_menu %}
+        <a href="{% url 'category' cat %}"
+           hx-get="{% url 'bloghome' %}?cat={{ cat.name }}"
+           hx-target="#dispatches-grid-wrap"
+           hx-push-url="true"
+           class="cat-pill-sm {% if selected_cat|lower == cat.name|lower %}active{% endif %}">{{ cat|upper }}</a>
+        {% endfor %}
+        <a href="{% url 'authors_list' %}" class="cat-pill-sm" style="color:var(--accent-green); border-color:rgba(0,255,157,0.35);"><i class="bi bi-people-fill me-1"></i>AUTHORS</a>
+    </div>
+    {% endif %}
+
+    <!-- ══ KARU-WISDOM EDITORIAL INTELLIGENCE STRIP ══ -->
+    <div class="karu-wisdom-blog-strip mb-4">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <div class="karu-strip-avatar"><i class="bi bi-stars"></i></div>
+                <div>
+                    <span class="karu-strip-badge">KARU-WISDOM AI</span>
+                    <span class="karu-strip-title">Explore Archives with AI Guide:</span>
+                </div>
+            </div>
+            <div class="karu-strip-chips">
+                <button type="button" class="karu-strip-chip" data-karu-ask="What are the essential dispatches on Queen Karuwaki and the Kalinga legacy?">👑 Queen Karuwaki</button>
+                <button type="button" class="karu-strip-chip" data-karu-ask="Recommend key environmental and ecology dispatches on Karuwaki Speaks">🌿 Environment</button>
+                <button type="button" class="karu-strip-chip" data-karu-ask="Explain legal protections and remedies for women empowerment in India">⚖️ Legal Dispatches</button>
+                <button type="button" class="karu-strip-chip" data-karu-ask="What does Karuwaki Speaks write about Vedic astronomy and cosmic harmonics?">🔮 Vedic Harmonics</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ LEAD STORY + TRENDING FEED (HIGH-DENSITY TOP ROW) ══ -->
+    {% if page_obj.number == 1 and page_obj.0 %}
+    {% with lead=page_obj.0 %}
+    <div class="row mb-4">
+        <!-- Lead Story (7 cols) -->
+        <div class="col-lg-7 mb-3 mb-lg-0">
+            <div class="lead-story-card">
+                <div class="lead-img-box">
+                    {% if lead.image %}
+                    <img src="{{ lead.image.url }}" alt="{{ lead.title }}" loading="lazy" decoding="async">
+                    {% else %}
+                    <div style="background:linear-gradient(135deg, #0c1936 0%, #040e2a 100%); width:100%; height:100%; min-height:280px; display:flex; align-items:center; justify-content:center; color:var(--accent-green); font-size:2.5rem;">✦</div>
+                    {% endif %}
+                    <span class="lead-badge">FEATURED LEAD DISPATCH</span>
+                    {% if request.user.is_authenticated %}
+                        {% if lead.sno in saved_ids %}
+                            {% include 'home/partials/_bookmark_button.html' with post=lead is_saved=True %}
+                        {% else %}
+                            {% include 'home/partials/_bookmark_button.html' with post=lead is_saved=False %}
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="lead-content">
+                    <div class="d-flex align-items-center gap-2 mb-2" style="gap:8px;">
+                        <span class="badge" style="background:var(--bg-surface); border:1px solid var(--border-card); color:var(--accent-green); font-family:var(--font-sans); font-weight:700; letter-spacing:0.8px; font-size:11px;">{{ lead.category.name|upper }}</span>
+                        <span class="text-muted small font-weight-bold" style="font-family:var(--font-sans); letter-spacing:0.5px;"><i class="bi bi-clock"></i> {{ lead.reading_time }} MIN READ</span>
+                    </div>
+                    <h2 class="lead-title">
+                        <a href="/blog/{{ lead.slug }}/">{{ lead.title }}</a>
+                    </h2>
+                    <p class="lead-excerpt">
+                        {{ lead.excerpt|default:lead.content|clean_excerpt:28 }}
+                    </p>
+                    <div class="d-flex align-items-center justify-content-between pt-2" style="border-top:1px solid var(--border-card);">
+                        <span style="font-family:var(--font-sans); font-size:12px; font-weight:700; letter-spacing:0.5px; color:var(--text-secondary);">
+                            BY {% if lead.author_profile %}<a href="{% url 'author_posts' lead.author_profile.slug %}" style="color:var(--accent-green); text-decoration:none;">{{ lead.display_author_name|upper }}</a>{% else %}{{ lead.display_author_name|upper }}{% endif %}
+                        </span>
+                        <a href="/blog/{{ lead.slug }}/" class="grid-read-link">READ DISPATCH →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trending Sidebar Feed (5 cols) -->
+        <div class="col-lg-5">
+            <div class="trending-box">
+                <div class="trending-box-header">
+                    <h3 class="trending-box-title">
+                        <i class="bi bi-lightning-charge-fill"></i> HIGH-IMPACT TRANSMISSIONS
+                    </h3>
+                    <span style="font-family:var(--font-sans); font-size:11px; font-weight:700; letter-spacing:1px; color:var(--text-secondary);">TOP READS</span>
+                </div>
+
+                <div class="d-flex flex-column justify-content-between flex-grow-1">
+                    {% for item in trending_posts %}
+                    <div class="trending-item">
+                        <span class="trending-num">0{{ forloop.counter }}</span>
+                        <div class="flex-grow-1">
+                            <h4 class="trending-info-title">
+                                <a href="/blog/{{ item.slug }}/">{{ item.title }}</a>
+                            </h4>
+                            <div class="trending-item-meta">
+                                <span>{{ item.category.name|upper }}</span>
+                                <span>•</span>
+                                <span>{{ item.reading_time }} MIN READ</span>
+                                <span>•</span>
+                                <span>{{ item.views }} VIEWS</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endwith %}
+    {% endif %}
+
+    <!-- ══ DISPATCHES GRID (3 COLUMNS) ══ -->
+    <div class="articles-subheading">
+        <div class="articles-subheading-left">
+            <h2>ALL ARCHIVE DISPATCHES</h2>
+            <span class="articles-page-meta">PAGE {{ page_obj.number }} OF {{ page_obj.paginator.num_pages }}</span>
+        </div>
+        <div class="archive-quick-filter-wrap position-relative">
+            <i class="bi bi-search"></i>
+            <input type="text"
+                   id="archiveFilterInput"
+                   name="query"
+                   class="archive-filter-input"
+                   placeholder="Search dispatches in real-time..."
+                   autocomplete="off"
+                   hx-get="{% url 'bloghome' %}"
+                   hx-trigger="keyup changed delay:300ms, search"
+                   hx-target="#dispatches-grid-wrap"
+                   hx-indicator="#archive-search-spinner"
+                   hx-push-url="true">
+            <span id="archive-search-spinner" class="spinner-border spinner-border-sm htmx-indicator" style="position: absolute; right: 12px; top: 12px; color: var(--accent-green);"></span>
+        </div>
+    </div>
+
+    {% include 'blog/partials/_dispatch_grid.html' %}
+
+</div>
+
+<!-- Bookmark Toast Notification -->
+<div id="bookmark-toast">
+    <i class="bi bi-bookmark-check-fill text-success me-2"></i>
+    <span id="bookmark-toast-msg">Article saved to profile</span>
+</div>
+{% endblock body %}
+
+{% block js %}
+<script src="{% static 'js/modules/blog-filter.js' %}"></script>
+{% endblock js %}

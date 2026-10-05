@@ -1,0 +1,438 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Athereal · Vedic Kundali &amp; Cosmic Harmonics | KSPEAK$ WEB3.0{% endblock title %}
+
+{% block meta_description %}Athereal: Astronomical Vedic Kundali computation engine calculating Lagna, 9 Grahas, 12 Bhavas, and Nakshatra placements under Nirayana D-1 charts.{% endblock meta_description %}
+{% block meta_keywords %}Athereal, Vedic Astrology, Kundali Chart, Nirayana, Vedic Harmonics, Grahas, Lagna, Karuwaki Speaks{% endblock meta_keywords %}
+
+{% block og_type %}website{% endblock og_type %}
+{% block og_title %}Athereal · Vedic Kundali &amp; Cosmic Harmonics | KSPEAK$ WEB3.0{% endblock og_title %}
+{% block og_description %}High-precision astronomical Vedic Kundali birth chart generator and cosmic resonance engine.{% endblock og_description %}
+
+{% block twitter_card %}summary_large_image{% endblock twitter_card %}
+{% block twitter_title %}Athereal · Vedic Kundali &amp; Cosmic Harmonics | KSPEAK$ WEB3.0{% endblock twitter_title %}
+{% block twitter_description %}High-precision astronomical Vedic Kundali birth chart generator and cosmic resonance engine.{% endblock twitter_description %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'css/pages/athereal.css' %}">
+{% endblock custom_css %}
+
+{% block body %}
+
+        
+<div class="app-container" style="padding-top: 24px; padding-bottom: 60px;">
+
+    <!-- ══ HERO ══ -->
+    <div class="text-center mb-2">
+        <h1 class="athereal-title">athereal</h1>
+        <span class="athereal-subtitle-pill">A.I ASTROLOGY · ANCIENT WISDOM · WEB3</span>
+    </div>
+
+    <hr class="cosmic-divider" style="margin: 24px 0 40px;">
+
+    <div class="row">
+
+        <!-- ══ LEFT ══ -->
+        <div class="col-lg-6 order-lg-1 order-1 left-col">
+
+            <div>
+                <p>Discover the power of astrology with Odisha's ancient heritage.</p>
+                <p>Uncover hidden cosmic insights with our evolving A.I &amp; community-aided models.</p>
+            </div>
+
+            <div class="video-container">
+                <video autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover;">
+                    <source src="/Karuwaki/static/web3/athereal/athereal-astro.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <ul class="feature-list">
+                <li>
+                    <span class="feature-icon">🤝</span>
+                    <span><b>Fusion of Community Perspectives</b> — Harnessing collective wisdom to enrich traditional knowledge bases with modern insights.</span>
+                </li>
+                <li>
+                    <span class="feature-icon">🔮</span>
+                    <span><b>AI-Driven Astro Insights</b> — Empowering token holders with cutting-edge astro.ai models for personalized guidance on personal, public, and financial matters.</span>
+                </li>
+                <li>
+                    <span class="feature-icon">🌱</span>
+                    <span><b>Continuous Evolution</b> — Athereal's dynamic growth is fueled by ongoing team contributions, expanding historical data, and predictive AI analyses.</span>
+                </li>
+            </ul>
+
+        </div>
+
+        <!-- ══ RIGHT ══ -->
+        <div class="col-lg-6 order-lg-2 order-2 right-col">
+
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
+                <div class="tithi-header mb-0" id="astro-tithi-header">{{ athereal.tithi_title|default:"AAJ KI TITHI" }}</div>
+                <span id="astro-sync-badge" class="badge bg-dark-subtle text-info border border-info-subtle px-3 py-2 rounded-pill" style="font-family:var(--font-sans); font-weight:700; font-size:11px; letter-spacing:1px;">
+                    <i class="bi bi-broadcast me-1"></i> <span id="astro-sync-text">{{ athereal.source|default:"Automated Vedic Ephemeris" }}</span>
+                </span>
+            </div>
+
+            <!-- Reactive Celestial Date Selector -->
+            <div class="search-card" id="date-search-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label for="date-search" class="mb-0">
+                        <i class="bi bi-calendar3 me-1"></i> CELESTIAL ALIGNMENT DATE
+                    </label>
+                    <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded-pill" style="font-size:10px; letter-spacing:0.5px;">
+                        <i class="bi bi-lightning-charge-fill"></i> AUTO-SYNC
+                    </span>
+                </div>
+                <div class="search-row">
+                    <input type="date" id="date-search" name="date" value="{{ search_date }}" aria-label="Select celestial date">
+                    <button type="button" id="btn-reset-today" class="today-reset-btn" onclick="resetAtherealDateToToday()" title="Reset to today's cosmic alignment">
+                        <i class="bi bi-arrow-counterclockwise" style="pointer-events:none;"></i> TODAY
+                    </button>
+                </div>
+            </div>
+
+            <!-- No results alert -->
+            {% if not_found %}
+            <div class="alert alert-warning mb-3" style="background:rgba(255,193,7,0.15); border:1px solid rgba(255,193,7,0.3); color:#ffd700; border-radius:10px; font-size:13px; font-family:var(--font-sans); font-weight:600; letter-spacing:0.5px;">
+                <i class="bi bi-exclamation-triangle-fill"></i> NO SPECIFIC ENTRY FOUND FOR {{ search_date }}. SHOWING NEAREST ALIGNMENT.
+            </div>
+            {% endif %}
+
+            {% if athereal %}
+            <!-- Astro data -->
+            <div class="astro-grid" id="astro-data-grid">
+                <div class="astro-row">
+                    <span class="astro-label"><span class="astro-label-icon">📅</span> DATE</span>
+                    <span class="astro-value" id="astro-val-date">{{ athereal.date_formatted|default:athereal.date|date:"F j, Y" }}</span>
+                </div>
+                <div class="astro-row">
+                    <span class="astro-label"><span class="astro-label-icon">📍</span> LOCATION</span>
+                    <span class="astro-value" id="astro-val-location">{{ athereal.location }}</span>
+                </div>
+                <div class="astro-row" id="astro-row-nakshatra">
+                    <span class="astro-label"><span class="astro-label-icon">🌌</span> NAKSHATRA</span>
+                    <span class="astro-value" id="astro-val-nakshatra">{{ athereal.nakshatra|default:"-" }}</span>
+                </div>
+                <div class="astro-row">
+                    <span class="astro-label"><span class="astro-label-icon">🌅</span> SUNRISE</span>
+                    <span class="astro-value" id="astro-val-sunrise">{{ athereal.sunrise }}</span>
+                </div>
+                <div class="astro-row">
+                    <span class="astro-label"><span class="astro-label-icon">🌇</span> SUNSET</span>
+                    <span class="astro-value" id="astro-val-sunset">{{ athereal.sunset }}</span>
+                </div>
+                <div class="astro-row">
+                    <span class="astro-label"><span class="astro-label-icon">🌕</span> MOONRISE</span>
+                    <span class="astro-value" id="astro-val-moonrise">{{ athereal.moonrise }}</span>
+                </div>
+                <div class="astro-row">
+                    <span class="astro-label"><span class="astro-label-icon">🌑</span> MOONSET</span>
+                    <span class="astro-value" id="astro-val-moonset">{{ athereal.moonset }}</span>
+                </div>
+                <div class="astro-row amrit">
+                    <span class="astro-label"><span class="astro-label-icon">✨</span> AMRIT KAAL</span>
+                    <span class="astro-value" id="astro-val-amrit">{{ athereal.amrit_kaal }}</span>
+                </div>
+                <div class="astro-row rahu">
+                    <span class="astro-label"><span class="astro-label-icon">⚠️</span> RAHU KAAL</span>
+                    <span class="astro-value" id="astro-val-rahu">{{ athereal.rahu_kaal }}</span>
+                </div>
+                <div class="astro-row abhijit">
+                    <span class="astro-label"><span class="astro-label-icon">⭐</span> ABHIJIT</span>
+                    <span class="astro-value" id="astro-val-abhijit">{{ athereal.abhijit }}</span>
+                </div>
+            </div>
+
+            <div class="mt-4 p-3{% if not athereal.cosmic_insight %} d-none{% endif %}" id="astro-insight-box" style="background:rgba(238,62,201,0.08); border:1px solid rgba(238,62,201,0.25); border-radius:14px;">
+                <h4 style="font-family:var(--font-heading); font-size:14px; font-weight:800; letter-spacing:1px; color:#EE3EC9; margin-bottom:8px;">
+                    ✨ COSMIC GUIDANCE &amp; ALIGNMENT
+                </h4>
+                <p id="astro-val-insight" style="font-size:14px; line-height:1.6; color:rgba(255,255,255,0.85); margin-bottom:0;">
+                    {{ athereal.cosmic_insight|linebreaksbr }}
+                </p>
+            </div>
+
+            {% else %}
+            <div class="text-center py-4 text-muted">
+                <p>No astronomical entries logged yet in the Admin panel.</p>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <!-- ══ SECTION 1: INTERACTIVE NAVAGRAHA PLANETARY TRANSIT WHEEL ══ -->
+    <hr class="cosmic-divider" style="margin: 60px 0 40px;">
+
+    <div class="text-center mb-4">
+        <span class="athereal-subtitle-pill">CELESTIAL RADAR · 12 BHAVAS · 9 GRAHAS</span>
+        <h2 class="section-heading-dyn" style="font-family:var(--font-heading); font-size:clamp(24px, 4.5vw, 36px); color:var(--text-primary); margin-bottom:8px;">
+            Navagraha Planetary Transit Orbit
+        </h2>
+        <p class="section-desc-dyn" style="color:var(--text-secondary); font-size:14px; max-width:560px; margin:auto;">
+            Real-time astronomical simulation of the 9 Vedic celestial bodies moving through the 12 cosmic rashis. Click or hover any celestial node to inspect coordinates.
+        </p>
+    </div>
+
+    <div class="wheel-console-card mb-5">
+        <div class="row align-items-center">
+            <!-- Left: SVG Wheel -->
+            <div class="col-lg-6 mb-4 mb-lg-0 wheel-display-wrap">
+                <svg id="celestial-wheel-svg" width="480" height="480" viewBox="0 0 480 480">
+                    <!-- Concentric Rings -->
+                    <circle cx="240" cy="240" r="230" fill="none" stroke="rgba(238,62,201,0.15)" stroke-width="1.5" />
+                    <circle cx="240" cy="240" r="195" fill="none" stroke="rgba(0,131,166,0.3)" stroke-width="1.5" />
+                    <circle cx="240" cy="240" r="145" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+                    <circle cx="240" cy="240" r="105" fill="none" stroke="rgba(193,255,114,0.2)" stroke-width="1" stroke-dasharray="4,4" />
+                    <circle cx="240" cy="240" r="40" class="earth-center" fill="rgba(1,10,36,0.9)" stroke="rgba(238,62,201,0.4)" stroke-width="2" />
+                    <text x="240" y="244" class="earth-label" fill="var(--accent-green)" font-size="12" font-family="var(--font-heading)" font-weight="900" letter-spacing="1" text-anchor="middle">EARTH</text>
+                </svg>
+            </div>
+
+            <!-- Right: Graha Dossier & Quick Selector -->
+            <div class="col-lg-6">
+                <span style="font-family:var(--font-sans); font-weight:800; font-size:11px; letter-spacing:1.5px; color:var(--text-muted); display:block; margin-bottom:8px;">
+                    QUICK GRAHA INSPECTOR
+                </span>
+                <div class="planet-pills-row">
+                    <button type="button" class="planet-pill-btn active" data-planet="surya">☀️ Surya</button>
+                    <button type="button" class="planet-pill-btn" data-planet="chandra">🌙 Chandra</button>
+                    <button type="button" class="planet-pill-btn" data-planet="mangala">🔴 Mangala</button>
+                    <button type="button" class="planet-pill-btn" data-planet="budha">🟢 Budha</button>
+                    <button type="button" class="planet-pill-btn" data-planet="guru">🟡 Guru</button>
+                    <button type="button" class="planet-pill-btn" data-planet="shukra">⚪ Shukra</button>
+                    <button type="button" class="planet-pill-btn" data-planet="shani">🪐 Shani</button>
+                    <button type="button" class="planet-pill-btn" data-planet="rahu">🌑 Rahu</button>
+                    <button type="button" class="planet-pill-btn" data-planet="ketu">🌘 Ketu</button>
+                </div>
+
+                <div id="planet-dossier-card" class="p-3" style="background:var(--bg-elevated); border:1px solid var(--border-card); border-radius:16px;">
+                    <!-- Populated via athereal-engine.js -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ══ SECTION 2: PERSONALIZED RASHI TRANSIT SYNTHESIZER ══ -->
+    <hr class="cosmic-divider" style="margin: 60px 0 40px;">
+
+    <div class="text-center mb-4">
+        <span class="athereal-subtitle-pill">DAILY GUIDANCE ENGINE · 12 RASHIS</span>
+        <h2 class="section-heading-dyn" style="font-family:'Merienda',cursive; font-size:clamp(24px, 4.5vw, 36px); color:var(--text-primary); margin-bottom:8px;">
+            Personalized Rashi Transit Guidance
+        </h2>
+        <p class="section-desc-dyn" style="color:var(--text-secondary); font-size:14px; max-width:580px; margin:auto;">
+            Select your Vedic Zodiac sign (Rashi) to dynamically synthesize today's active Nakshatra, Amrit Kaal, and planetary harmonics into actionable clarity.
+        </p>
+    </div>
+
+    <!-- 12-Rashi Glass Grid -->
+    <div class="rashi-grid-wrap">
+        <div class="rashi-select-pill active" data-rashi-id="0">
+            <span class="rashi-glyph">♈</span>
+            <span class="rashi-name">Mesha</span>
+            <span class="rashi-en">Aries</span>
+        </div>
+        <div class="rashi-select-pill" data-rashi-id="1">
+            <span class="rashi-glyph">♉</span>
+            <span class="rashi-name">Vrishabha</span>
+            <span class="rashi-en">Taurus</span>
+        </div>
+        <div class="rashi-select-pill" data-rashi-id="2">
+            <span class="rashi-glyph">♊</span>
+            <span class="rashi-name">Mithuna</span>
+            <span class="rashi-en">Gemini</span>
+        </div>
+        <div class="rashi-select-pill" data-rashi-id="3">
+            <span class="rashi-glyph">♋</span>
+            <span class="rashi-name">Karka</span>
+            <span class="rashi-en">Cancer</span>
+        </div>
+        <div class="rashi-select-pill" data-rashi-id="4">
+            <span class="rashi-glyph">♌</span>
+            <span class="rashi-name">Simha</span>
+            <span class="rashi-en">Leo</span>
+        </div>
+        <div class="rashi-select-pill" data-rashi-id="5">
+            <span class="rashi-glyph">♍</span>
+            <span class="rashi-name">Kanya</span>
+            <span class="rashi-en">Virgo</span>
+        </div>
+        <div class="rashi-select-pill" data-rashi-id="6">
+            <span class="rashi-glyph">♎</span>
+            <span class="rashi-name">Tula</span>
+            <span class="rashi-en">Libra</span>
+        </div>
+        <div class="rashi-select-pill" data-rashi-id="7">
+            <span class="rashi-glyph">♏</span>
+            <span class="rashi-name">Vrishchika</span>
+            <span class="rashi-en">Scorpio</span>
+        </div>
+        <div class="rashi-select-pill" data-rashi-id="8">
+            <span class="rashi-glyph">♐</span>
+            <span class="rashi-name">Dhanu</span>
+            <span class="rashi-en">Sagittarius</span>
+        </div>
+        <div class="rashi-select-pill" data-rashi-id="9">
+            <span class="rashi-glyph">♑</span>
+            <span class="rashi-name">Makara</span>
+            <span class="rashi-en">Capricorn</span>
+        </div>
+        <div class="rashi-select-pill" data-rashi-id="10">
+            <span class="rashi-glyph">♒</span>
+            <span class="rashi-name">Kumbha</span>
+            <span class="rashi-en">Aquarius</span>
+        </div>
+        <div class="rashi-select-pill" data-rashi-id="11">
+            <span class="rashi-glyph">♓</span>
+            <span class="rashi-name">Meena</span>
+            <span class="rashi-en">Pisces</span>
+        </div>
+    </div>
+
+    <!-- Active Rashi Synthesis Card -->
+    <div class="rashi-forecast-card" id="rashi-forecast-output">
+        <!-- Dynamically populated via athereal-engine.js -->
+    </div>
+
+    <!-- ══ SECTION 3: PERSONALIZED BIRTH CHART (KUNDALI / NATAL WHEEL) ══ -->
+    <hr class="cosmic-divider" style="margin: 60px 0 40px;">
+
+    <div class="text-center mb-4">
+        <span class="athereal-subtitle-pill">SIDEREAL LAHIRI EPHEMERIS · VEDIC BHAVAS</span>
+        <h2 class="section-heading-dyn" style="font-family:var(--font-heading); font-size:clamp(24px, 4.5vw, 36px); color:var(--text-primary); margin-bottom:8px;">
+            Personalized Vedic Birth Chart (Kundali)
+        </h2>
+        <p class="section-desc-dyn" style="color:var(--text-secondary); font-size:14px; max-width:620px; margin:auto;">
+            Compute your exact Sidereal Ascendant (Lagna), planetary house allocations, and Nakshatras using astronomical ephemeris precision. Rendered instantly in classical North or South Indian format.
+        </p>
+    </div>
+
+    <!-- Kundali Input Card -->
+    <div class="search-card mb-4" style="max-width: 860px; margin-left: auto; margin-right: auto;">
+        <form id="kundali-calc-form" onsubmit="return false;">
+            <div class="row g-3">
+                <div class="col-md-3 col-6">
+                    <label for="k-date">Birth Date</label>
+                    <input type="date" id="k-date" class="form-control" required style="background:var(--input-bg); border:1px solid var(--input-border); color:var(--text-primary); border-radius:var(--radius-md); padding:9px 12px; font-family:var(--font-sans); font-size:13px; width:100%;">
+                </div>
+                <div class="col-md-3 col-6">
+                    <label for="k-time">Birth Time</label>
+                    <input type="time" id="k-time" class="form-control" value="12:00" required style="background:var(--input-bg); border:1px solid var(--input-border); color:var(--text-primary); border-radius:var(--radius-md); padding:9px 12px; font-family:var(--font-sans); font-size:13px; width:100%;">
+                </div>
+                <div class="col-md-4 col-8">
+                    <label for="k-city">Birth Location</label>
+                    <select id="k-city" class="form-control" style="background:var(--input-bg); border:1px solid var(--input-border); color:var(--text-primary); border-radius:var(--radius-md); padding:9px 12px; font-family:var(--font-sans); font-size:13px; width:100%;">
+                        <option value="20.2961,85.8245,5.5" selected>Bhubaneswar, Odisha (IST +5:30)</option>
+                        <option value="28.6139,77.2090,5.5">New Delhi, India (IST +5:30)</option>
+                        <option value="19.0760,72.8777,5.5">Mumbai, India (IST +5:30)</option>
+                        <option value="12.9716,77.5946,5.5">Bengaluru, India (IST +5:30)</option>
+                        <option value="22.5726,88.3639,5.5">Kolkata, India (IST +5:30)</option>
+                        <option value="51.5074,-0.1278,0.0">London, UK (GMT 0:00)</option>
+                        <option value="40.7128,-74.0060,-5.0">New York, USA (EST -5:00)</option>
+                        <option value="37.7749,-122.4194,-8.0">San Francisco, USA (PST -8:00)</option>
+                        <option value="35.6762,139.6503,9.0">Tokyo, Japan (JST +9:00)</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-4 d-flex align-items-end">
+                    <button type="submit" id="k-submit-btn" class="btn-athereal-generate w-100">
+                        <span>Generate</span> <i class="bi bi-stars"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Kundali Visualization & Output Card -->
+    <div id="kundali-output-container" class="rashi-forecast-card mb-5" style="display: none; max-width: 980px; margin-left: auto; margin-right: auto;">
+        <!-- Header & Style Selector -->
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 pb-3" style="border-bottom: 1px solid var(--border-card);">
+            <div>
+                <span id="k-lagna-badge" class="k-chart-badge k-lagna-badge">
+                    Lagna: Loading...
+                </span>
+                <span id="k-nakshatra-badge" class="k-chart-badge k-nakshatra-badge ms-2">
+                    Nakshatra: Loading...
+                </span>
+            </div>
+            <div class="d-flex gap-2 mt-2 mt-md-0">
+                <button type="button" class="k-style-btn active" data-style="north" id="k-btn-north">North Indian (Diamond)</button>
+                <button type="button" class="k-style-btn" data-style="south" id="k-btn-south">South Indian (Grid)</button>
+                <button type="button" class="k-download-btn" id="k-download-btn">
+                    <i class="bi bi-download"></i> Save SVG
+                </button>
+            </div>
+        </div>
+
+        <div class="row align-items-center">
+            <!-- Left: SVG Chart Canvas -->
+            <div class="col-lg-6 text-center mb-4 mb-lg-0">
+                <div id="kundali-svg-wrap" style="background:var(--bg-elevated); border:1px solid var(--border-card); border-radius:16px; padding:16px; display:inline-block; max-width:100%; box-shadow:0 8px 30px rgba(0,0,0,0.3);">
+                    <!-- SVG rendered dynamically -->
+                </div>
+            </div>
+
+            <!-- Right: Planetary Placements Table -->
+            <div class="col-lg-6">
+                <h4 style="font-family:var(--font-heading); font-size:16px; font-weight:800; color:var(--text-main); margin-bottom:12px;">
+                    🪐 Navagraha Positions (Lahiri Sidereal)
+                </h4>
+                <div class="table-responsive" style="max-height: 380px; overflow-y: auto;">
+                    <table class="table table-sm text-start" style="color:var(--text-main); font-family:var(--font-sans); font-size:12.5px; border-color:var(--border-card);">
+                        <thead>
+                            <tr style="border-bottom:1px solid var(--border-card); color:var(--text-secondary);">
+                                <th>Graha</th>
+                                <th>Rashi</th>
+                                <th>Degree</th>
+                                <th>Nakshatra</th>
+                                <th>Bhava</th>
+                            </tr>
+                        </thead>
+                        <tbody id="kundali-planets-tbody">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock body %}
+
+{% block js %}
+<script>
+function resetAtherealDateToToday() {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const d = String(now.getDate()).padStart(2, '0');
+    const todayStr = `${y}-${m}-${d}`;
+
+    const dateInput = document.getElementById('date-search');
+    const icon = document.querySelector('#btn-reset-today i');
+    if (icon) {
+        icon.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+        icon.style.transform = 'rotate(-360deg)';
+        setTimeout(() => { icon.style.transform = ''; }, 450);
+    }
+
+    if (dateInput) {
+        dateInput.value = todayStr;
+        dateInput.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+
+    if (typeof window.fetchAndUpdateAthereal === 'function') {
+        window.fetchAndUpdateAthereal(todayStr);
+    }
+
+    if (window.history && window.history.pushState) {
+        window.history.pushState({}, '', '/athereal/');
+    }
+}
+</script>
+<script src="{% static 'js/athereal-engine.js' %}?v=9.9"></script>
+{% endblock js %}

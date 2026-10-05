@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load extras %}
+
+{% block title %}{{ cats }} Articles | KSPEAK$ WEB3.0{% endblock title %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'css/pages/blog-archive.css' %}">
+{% endblock custom_css %}
+
+{% block body %}
+<div class="app-container mt-4">
+    <!-- Category Header -->
+    <div class="category-hero">
+        <span class="category-eyebrow">ARCHIVE DISPATCHES</span>
+        <h1 class="category-title">{{ cats }}</h1>
+    </div>
+
+    <!-- Category Pills -->
+    {% if category_menu %}
+    <div class="category-pills-wrap">
+        <a href="/blog/" class="cat-pill">ALL</a>
+        {% for cat in category_menu %}
+        <a href="{% url 'category' cat %}" class="cat-pill {% if cat.name|lower == cats|lower %}active{% endif %}">{{ cat|upper }}</a>
+        {% endfor %}
+        <a href="{% url 'authors_list' %}" class="cat-pill" style="color:var(--accent-green); border-color:rgba(0,255,157,0.35);"><i class="bi bi-people-fill me-1"></i>AUTHORS</a>
+    </div>
+    {% endif %}
+
+    <!-- Articles Grid -->
+    <div class="article-grid">
+        {% for post in page_obj %}
+        <article class="article-card">
+            <div class="card-thumb-wrap">
+                {% if post.image %}
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" loading="lazy" decoding="async">
+                {% else %}
+                <div style="background:#0c1936; width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--accent-green); font-size:1.5rem;">✦</div>
+                {% endif %}
+            </div>
+            <div class="article-card-body">
+                <div class="card-meta-row">
+                    <span><i class="bi bi-clock"></i> {{ post.reading_time }} min</span>
+                    <span><i class="bi bi-eye"></i> {{ post.views }}</span>
+                </div>
+                <h3 class="article-card-title">
+                    <a href="/blog/{{ post.slug }}/">{{ post.title }}</a>
+                </h3>
+                <p class="article-card-excerpt">
+                    {{ post.excerpt|default:post.content|clean_excerpt:22 }}
+                </p>
+                <div class="article-card-footer">
+                    <span class="author-chip">
+                        {% if post.author_profile %}
+                        <a href="{% url 'author_posts' post.author_profile.slug %}" style="color:inherit; text-decoration:none;" title="{{ post.display_author_name }}">
+                            <i class="bi bi-person-circle" style="color:var(--accent-green);"></i> {{ post.display_author_name }}
+                        </a>
+                        {% else %}
+                        <i class="bi bi-person"></i> {{ post.display_author_name }}
+                        {% endif %}
+                    </span>
+                    <a href="/blog/{{ post.slug }}/" class="read-btn">READ →</a>
+                </div>
+            </div>
+        </article>
+        {% empty %}
+        <div class="col-12 text-center text-muted py-5">
+            <p>No articles found under "{{ cats }}".</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <nav class="pagination-wrapper" aria-label="Category navigation">
+        <ul class="custom-pagination">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">← PREV</a>
+            </li>
+            {% endif %}
+
+            {% for i in page_obj.paginator.page_range %}
+                {% if page_obj.number == i %}
+                <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+                {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">NEXT →</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock body %}

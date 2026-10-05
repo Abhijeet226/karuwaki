@@ -1,0 +1,68 @@
+<!-- Floating Launcher Button -->
+<div class="karu-wisdom-launcher" id="karuWisdomLauncher" role="button" tabindex="0" aria-label="Open Karu-Wisdom AI" aria-expanded="false" aria-controls="karuWisdomModal" title="Consult Karu-Wisdom AI Guide (Ctrl+K)">
+    <div class="karu-wisdom-avatar">
+        <i class="bi bi-stars"></i>
+    </div>
+    <span class="karu-wisdom-label">Karu-Wisdom</span>
+    <span class="karu-wisdom-badge-ai">AI</span>
+    <kbd class="karu-launcher-kbd">⌘K</kbd>
+</div>
+
+<!-- AI Modal Container -->
+<div class="karu-modal-backdrop" id="karuWisdomModal" role="dialog" aria-modal="true">
+    <div class="karu-modal-card">
+        <div class="karu-modal-header">
+            <div class="karu-modal-title-wrap">
+                <div class="karu-wisdom-avatar" style="width: 28px; height: 28px; font-size: 13px;">
+                    <i class="bi bi-stars"></i>
+                </div>
+                <h3 class="karu-modal-title">Karu-Wisdom</h3>
+                <span class="karu-wisdom-badge-ai">Gemini AI</span>
+            </div>
+            <div class="karu-modal-actions">
+                <button class="karu-modal-action-btn" id="karuResetBtn" title="Reset inquiry" aria-label="Reset inquiry">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                </button>
+                <button class="karu-modal-close" id="karuModalCloseBtn" title="Close (Esc)" aria-label="Close modal">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="karu-modal-body">
+            <div class="karu-chips-row">
+                <button class="karu-chip-btn" data-query="Who was Queen Karuwaki?">👑 Queen Karuwaki</button>
+                <button class="karu-chip-btn" data-query="What is Athereal and cosmic harmonics?">✨ What is Athereal?</button>
+                <button class="karu-chip-btn" data-query="Recommend key dispatches on Karuwaki Speaks">📚 Editorial Dispatches</button>
+                <button class="karu-chip-btn" data-query="Explain Vedic Astronomy and Nirayana system">🌌 Vedic Astronomy</button>
+                <button class="karu-chip-btn" data-query="What is the significance of Lagna in a Kundali?">🔮 Lagna & Kundali</button>
+            </div>
+
+            <div class="karu-output-wrapper">
+                <button class="karu-copy-btn" id="karuCopyBtn" title="Copy answer to clipboard" aria-label="Copy answer">
+                    <i class="bi bi-clipboard"></i> <span>Copy</span>
+                </button>
+                <div class="karu-output-box" id="karuOutputBox" aria-live="polite" aria-atomic="true">
+                    <strong>Greetings, seeker.</strong> I am Karu-Wisdom, your guide to timeless historical heritage, philosophical inquiry, and cosmic mechanics. Select an inquiry chip above or enter your question below.
+                </div>
+            </div>
+
+            <div class="karu-source-pill" id="karuSourcePill" style="display: none;">
+                <i class="bi bi-check-circle-fill text-success"></i> <span id="karuSourceText">Verified Knowledge Source</span>
+            </div>
+        </div>
+
+        <div class="karu-modal-footer">
+            <form id="karuQueryForm" class="karu-input-group mb-2" onsubmit="return false;">
+                <input type="text" id="karuQueryInput" class="karu-input-field" placeholder="Ask about Karuwaki, dispatches, philosophy..." maxlength="400" autocomplete="off">
+                <button type="submit" id="karuSendBtn" class="karu-send-btn">
+                    <span>Ask</span> <i class="bi bi-send-fill"></i>
+                </button>
+            </form>
+            <div class="d-flex align-items-center justify-content-between pt-2" style="border-top: 1px dashed var(--border-card); font-size: 11.5px;">
+                <span class="text-muted"><i class="bi bi-link-45deg"></i> Deep-linked with Karuwaki archives</span>
+                <a href="/blog/" class="karu-inline-link" style="font-size: 11.5px;"><i class="bi bi-collection-play me-1"></i>Explore All Dispatches →</a>
+            </div>
+        </div>
+    </div>
+</div>

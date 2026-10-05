@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Privacy & Compliance | Karuwaki Speaks Web3.0{% endblock title %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'css/pages/legal.css' %}">
+{% endblock custom_css %}
+
+{% block body %}
+<div class="editorial-page-wrap">
+
+    <!-- ══ BREADCRUMBS ══ -->
+    <div class="editorial-breadcrumbs">
+        <a href="/">HOME</a> / <span>PRIVACY &amp; COMPLIANCE DIRECTIVE</span>
+    </div>
+
+    <!-- ══ HERO BANNER ══ -->
+    <div class="editorial-hero-card">
+        <div class="editorial-hero-glow"></div>
+        <div class="editorial-tag-pill">
+            <i class="bi bi-shield-lock-fill"></i> REGULATORY &amp; DATA CUSTODY
+        </div>
+        <h1 class="editorial-title">
+            Privacy &amp; <span>Compliance Framework</span>
+        </h1>
+        <p class="editorial-lead-prose">
+            At <strong>KARUWAKISPEAKS.COM</strong>, reader sovereignty and transparent data stewardship form our operational bedrock. We minimize tracking, preserve your reading independence, and operate in strict alignment with regional cyber laws and international digital standards.
+        </p>
+    </div>
+
+    <!-- ══ SECTION 01: PRIVACY POLICY ══ -->
+    <div class="legal-section-card">
+        <div class="legal-section-header">
+            <span class="legal-sec-num">01</span>
+            <h2 class="legal-section-title">Data Privacy &amp; Collection Policy</h2>
+        </div>
+        <div class="legal-section-body">
+            <p>
+                We only collect minimal telemetry and user-provided information essential to deliver requested services (such as account authorization, bookmark persistence, and editorial commentary).
+            </p>
+            <p>
+                <strong>We do not sell, rent, or trade personal information to third-party data brokers.</strong> Any telemetry captured is anonymized and utilized solely to diagnose server load and optimize reading performance across our edge networks.
+            </p>
+        </div>
+    </div>
+
+    <!-- ══ SECTION 02: OFFLINE VAULT & LOCAL STORAGE ══ -->
+    <div class="legal-section-card">
+        <div class="legal-section-header">
+            <span class="legal-sec-num">02</span>
+            <h2 class="legal-section-title">Offline Reading Vault &amp; PWA Storage</h2>
+        </div>
+        <div class="legal-section-body">
+            <p>
+                Our Progressive Web App (PWA) and Offline Reading Vault leverage browser-sandboxed IndexedDB and CacheStorage APIs.
+            </p>
+            <p>
+                Articles, offline dispatches, and theme preferences cached locally on your hardware remain entirely under your device control. You can clear this stored data at any time via browser site settings or through your profile dashboard.
+            </p>
+        </div>
+    </div>
+
+    <!-- ══ SECTION 03: COMPLIANCE ══ -->
+    <div class="legal-section-card">
+        <div class="legal-section-header">
+            <span class="legal-sec-num">03</span>
+            <h2 class="legal-section-title">Regulatory Standards &amp; Intermediary Guidelines</h2>
+        </div>
+        <div class="legal-section-body">
+            <p>
+                KARUWAKISPEAKS.COM adheres to applicable provisions of India's Information Technology Act, 2000, and the Digital Personal Data Protection (DPDP) Act. We respect the safe-harbor standards governing digital cultural archives and community publishing platforms.
+            </p>
+            <p>
+                For grievance redressal, copyright notices, or data removal requests, our designated compliance desk can be reached directly at <a href="mailto:admin@karuwakispeaks.com" style="color:var(--accent-green); text-decoration:none; font-weight:700;">admin@karuwakispeaks.com</a>.
+            </p>
+        </div>
+    </div>
+
+    <!-- ══ SECTION 04: EDITORIAL DISCLAIMER ══ -->
+    <div class="legal-section-card">
+        <div class="legal-section-header">
+            <span class="legal-sec-num">04</span>
+            <h2 class="legal-section-title">Editorial Independence &amp; Content Disclaimer</h2>
+        </div>
+        <div class="legal-section-body">
+            <p>
+                Dispatches, commentary, and cultural essays published by guest scholars, contributors, and columnists express their individual research perspectives. Karuwaki Speaks fosters an open forum for intellectual, historical, and philosophical inquiry.
+            </p>
+        </div>
+    </div>
+
+    <!-- ══ SOCIAL CONNECT STRIP ══ -->
+    <div class="social-connect-bar">
+        <a href="https://x.com/KaruwakiSpeaks" target="_blank" rel="noopener noreferrer" class="social-pill-btn">
+            <i class="bi bi-twitter-x"></i> <span>X (Twitter)</span>
+        </a>
+        <a href="https://t.me/karuwakispeaks" target="_blank" rel="noopener noreferrer" class="social-pill-btn">
+            <i class="bi bi-telegram"></i> <span>Telegram</span>
+        </a>
+        <a href="https://www.youtube.com/@karuwakispeaks" target="_blank" rel="noopener noreferrer" class="social-pill-btn">
+            <i class="bi bi-youtube"></i> <span>YouTube</span>
+        </a>
+        <a href="https://facebook.com/karuwakispeaks" target="_blank" rel="noopener noreferrer" class="social-pill-btn">
+            <i class="bi bi-facebook"></i> <span>Facebook</span>
+        </a>
+    </div>
+
+</div>
+{% endblock body %}

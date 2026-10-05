@@ -1,0 +1,9 @@
+{
+  "venvPath": "/home/ceres/Downloads/Karuwaki",
+  "venv": ".venv",
+  "extraPaths": [
+    "/home/ceres/Downloads/Karuwaki",
+    "/home/ceres/Downloads/Karuwaki/.venv/lib/python3.14/site-packages"
+  ],
+  "pythonVersion": "3.11"
+}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load extras %}
+
+{% block title %}Search Archive | KSPEAK$ WEB3.0{% endblock title %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'css/pages/search.css' %}">
+{% endblock custom_css %}
+
+{% block body %}
+<div class="app-container py-3">
+    <div class="search-header">
+        <span style="font-family:'Big Shoulders Stencil Text'; font-size:11px; letter-spacing:3px; color:var(--accent-green);">ARCHIVE SEARCH RESULTS</span>
+        <h1 style="font-family:'Merienda',cursive; font-size:24px; color:var(--text-primary); margin-top:4px;">
+            Results for: <span style="color:var(--accent-green);">"{{ query }}"</span>
+        </h1>
+        <span style="font-size:12px; color:var(--text-muted); font-family:'Big Shoulders Stencil Text'; letter-spacing:1px;">
+            {{ allPosts|length }} MATCHES FOUND
+        </span>
+    </div>
+
+    {% if allPosts|length < 1 %}
+    <div class="search-empty-box">
+        <i class="bi bi-search search-empty-icon"></i>
+        <h4 class="search-empty-title">NO MATCHING DISPATCHES</h4>
+        <p class="search-empty-desc">
+            Your query <b>"{{ query }}"</b> did not match any indexed documents. Try using broader keywords.
+        </p>
+        <a href="/blog/" class="btn-search-explore">
+            EXPLORE ALL DISPATCHES →
+        </a>
+    </div>
+    {% endif %}
+
+    {% for post in allPosts %}
+    <div class="search-result-card">
+        <div class="row g-0 no-gutters">
+            <div class="col-md-3 search-img-col">
+                {% if post.image %}
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" loading="lazy" decoding="async">
+                {% else %}
+                <div class="search-placeholder-thumb">✦</div>
+                {% endif %}
+            </div>
+            <div class="col-md-9 search-body-col">
+                <div class="search-meta-row">
+                    <span class="search-cat-name">{{ post.category.name|upper }}</span> · {{ post.reading_time }} MIN READ · BY {{ post.display_author_name|default:post.author|upper }}
+                </div>
+                <h3 class="search-title">
+                    <a href="/blog/{{ post.slug }}/">{{ post.title }}</a>
+                </h3>
+                <p class="search-excerpt-text">
+                    {{ post.excerpt|default:post.content|clean_excerpt:28 }}
+                </p>
+                <div>
+                    <a href="/blog/{{ post.slug }}/" class="btn-read-more">READ TRANSMISSION →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock body %}

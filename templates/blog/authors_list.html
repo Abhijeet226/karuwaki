@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Editorial Board & Contributors | KSPEAK$ WEB3.0{% endblock title %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'css/pages/authors.css' %}">
+{% endblock custom_css %}
+
+{% block body %}
+<div class="app-container mt-4">
+
+    <!-- ══ BREADCRUMBS ══ -->
+    <div class="mb-3" style="font-family:var(--font-sans); font-size:12px; letter-spacing:1px; color:var(--text-secondary);">
+        <a href="/" style="color:inherit; text-decoration:none;">HOME</a> / 
+        <a href="/blog/" style="color:inherit; text-decoration:none;">BLOG</a> / 
+        <span style="color:var(--accent-green);">EDITORIAL BOARD</span>
+    </div>
+
+    <!-- ══ HERO BANNER ══ -->
+    <section class="authors-hero-section">
+        <span class="authors-eyebrow">✦ VOICES OF TRUTH & INTELLECT</span>
+        <h1 class="authors-title">Editorial Board & Contributors</h1>
+        <p class="authors-sub">
+            Meet the researchers, constitutional scholars, historians, and cultural philosophers shaping the transmissions of Karuwaki Speaks.
+        </p>
+    </section>
+
+    <!-- ══ AUTHORS GRID ══ -->
+    {% if authors %}
+    <div class="authors-grid">
+        {% for author in authors %}
+        <div class="author-card-tile">
+            <div class="author-tile-glow"></div>
+            
+            <div class="author-tile-header">
+                <div class="author-tile-avatar-wrap">
+                    {% if author.avatar %}
+                    <img src="{{ author.avatar.url }}" alt="{{ author.name }}" class="author-tile-avatar" loading="lazy" decoding="async">
+                    {% else %}
+                    <div class="author-tile-avatar-fallback">
+                        {{ author.name|slice:":1"|upper }}
+                    </div>
+                    {% endif %}
+                    {% if author.featured %}
+                    <span class="author-tile-featured-star" title="Featured Contributor"><i class="bi bi-patch-check-fill"></i></span>
+                    {% endif %}
+                </div>
+                <div class="author-tile-info">
+                    <h3 class="author-tile-name">
+                        <a href="{% url 'author_posts' author.slug %}">{{ author.name }}</a>
+                    </h3>
+                    {% if author.designation %}
+                    <div class="author-tile-role">{{ author.designation }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <p class="author-tile-bio">
+                {{ author.bio|default:"Dedicated researcher and contributor to Karuwaki cultural archives."|truncatewords:24 }}
+            </p>
+
+            <div class="author-tile-footer">
+                <span class="author-tile-dispatches-tag">
+                    <i class="bi bi-journal-text me-1"></i>{{ author.num_posts }} Dispatches
+                </span>
+                <a href="{% url 'author_posts' author.slug %}" class="author-tile-dossier-btn">
+                    Explore Dossier <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <p style="color:var(--text-secondary);">No curated author profiles registered yet.</p>
+        <a href="/blog/" class="btn btn-outline-success">Return to Dispatches</a>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock body %}

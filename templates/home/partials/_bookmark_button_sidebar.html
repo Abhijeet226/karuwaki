@@ -1,0 +1,9 @@
+<button type="button"
+        hx-post="{% url 'toggle_save_post' post.slug %}?variant=sidebar"
+        hx-target="this"
+        hx-swap="outerHTML"
+        class="btn-sidebar-bookmark w-100"
+        style="background:none; border:none; text-align:inherit; cursor:pointer;">
+    <i class="bi {% if is_saved %}bi-bookmark-fill text-warning{% else %}bi-bookmark{% endif %}"></i>
+    <span>{% if is_saved %}SAVED IN PROFILE{% else %}SAVE DISPATCH{% endif %}</span>
+</button>

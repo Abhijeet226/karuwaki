@@ -1,0 +1,64 @@
+{% extends 'admin/index.html' %}
+{% load i18n static %}
+
+{% block content %}
+<div class="mb-8 space-y-6">
+    <!-- Quick Actions Bar -->
+    <div class="flex flex-wrap items-center justify-between gap-4 p-4 rounded-xl bg-gray-900/60 border border-gray-800 backdrop-blur">
+        <div class="flex items-center gap-3">
+            <span class="flex h-3 w-3 relative">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+            </span>
+            <span class="text-sm font-semibold tracking-wide text-gray-200">
+                KSPEAK$ Web3 Engine Online
+            </span>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+            <a href="{% url 'admin:blog_post_add' %}" class="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-emerald-300 bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-500/30 rounded-lg transition-colors">
+                <span class="material-symbols-outlined text-sm">add_circle</span>
+                New Dispatch
+            </a>
+            <a href="{% url 'admin:home_athereal_add' %}" class="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-fuchsia-300 bg-fuchsia-950/60 hover:bg-fuchsia-900/80 border border-fuchsia-500/30 rounded-lg transition-colors">
+                <span class="material-symbols-outlined text-sm">auto_awesome</span>
+                Log Astro Tithi
+            </a>
+            <a href="/" target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-sky-300 bg-sky-950/60 hover:bg-sky-900/80 border border-sky-500/30 rounded-lg transition-colors">
+                <span class="material-symbols-outlined text-sm">open_in_new</span>
+                View Live Site
+            </a>
+            <a href="/api/trending/" target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-purple-300 bg-purple-950/60 hover:bg-purple-900/80 border border-purple-500/30 rounded-lg transition-colors">
+                <span class="material-symbols-outlined text-sm">api</span>
+                REST API
+            </a>
+        </div>
+    </div>
+
+    <!-- Live KPI Metrics Grid -->
+    {% if kpi_stats %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {% for card in kpi_stats %}
+        <div class="p-5 rounded-xl bg-gray-900/80 border border-gray-800 shadow-sm relative overflow-hidden transition-all hover:border-gray-700">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-gray-400">
+                    {{ card.title }}
+                </span>
+                <span class="material-symbols-outlined text-{{ card.color }}-400 text-xl">
+                    {{ card.icon }}
+                </span>
+            </div>
+            <div class="text-2xl font-black text-gray-100 tracking-tight mb-1">
+                {{ card.metric }}
+            </div>
+            <div class="text-xs text-gray-400">
+                {{ card.subtext }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+
+<!-- Default Unfold App List -->
+{{ block.super }}
+{% endblock content %}

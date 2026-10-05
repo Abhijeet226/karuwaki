@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}User Profile | {{ request.user.username|upper }} | KSPEAK$ WEB3.0{% endblock title %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'css/pages/profile.css' %}">
+{% endblock custom_css %}
+
+{% block body %}
+<div class="container profile-container">
+
+    <!-- ══ PROFILE HERO CARD ══ -->
+    <div class="profile-hero-card">
+        <div class="d-flex flex-column flex-md-row align-items-center align-items-md-start text-center text-md-start">
+            <div class="avatar-wrapper mb-3 mb-md-0">
+                {% if profile.avatar %}
+                <img src="{{ profile.avatar.url }}" alt="{{ request.user.username }}" class="avatar-img">
+                {% else %}
+                <div class="avatar-monogram">{{ request.user.username|first|upper }}</div>
+                {% endif %}
+            </div>
+
+            <div class="flex-grow-1">
+                <h1 class="user-info-title">
+                    {% if request.user.first_name %}
+                    {{ request.user.first_name }} {{ request.user.last_name }}
+                    {% else %}
+                    {{ request.user.username }}
+                    {% endif %}
+                </h1>
+                <span class="user-handle">@{{ request.user.username|upper }} · TRANSMISSION OPERATOR</span>
+
+                {% if profile.bio %}
+                <p class="profile-bio-text">
+                    {{ profile.bio }}
+                </p>
+                {% endif %}
+
+                <div class="d-flex flex-wrap justify-content-center justify-content-md-start">
+                    <span class="stat-pill">
+                        <i class="bi bi-calendar3"></i> JOINED {{ request.user.date_joined|date:"M Y"|upper }}
+                    </span>
+                    <span class="stat-pill">
+                        <i class="bi bi-bookmark-fill" style="color:var(--accent-green);"></i> {{ saved_count }} SAVED
+                    </span>
+                    <span class="stat-pill">
+                        <i class="bi bi-chat-dots-fill" style="color:var(--accent-pink);"></i> {{ comments_count }} COMMENTS
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ TAB BAR ══ -->
+    <div class="profile-tabs">
+        <button type="button" class="profile-tab-btn active" data-tab="edit-tab">
+            <i class="bi bi-person-gear me-1"></i> PROFILE SETTINGS
+        </button>
+        <button type="button" class="profile-tab-btn" data-tab="saved-tab" id="saved-tab-btn">
+            <i class="bi bi-bookmark-star me-1"></i> SAVED DISPATCHES ({{ saved_count }})
+        </button>
+        <button type="button" class="profile-tab-btn" data-tab="security-tab">
+            <i class="bi bi-shield-lock me-1"></i> SECURITY &amp; ACCESS
+        </button>
+    </div>
+
+    <!-- ══ TAB 1: EDIT PROFILE ══ -->
+    <div class="profile-pane active" id="edit-tab">
+        <div class="form-glass-card">
+            <form method="POST" action="/profile/" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="first_name">FIRST NAME</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ request.user.first_name }}" placeholder="Enter first name">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="last_name">LAST NAME</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ request.user.last_name }}" placeholder="Enter last name">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="email">EMAIL ADDRESS</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ request.user.email }}" placeholder="operator@domain.com">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="avatar">AVATAR / PROFILE PICTURE</label>
+                        <input type="file" class="form-control-file profile-avatar-input" id="avatar" name="avatar" accept="image/*">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="bio">BIOGRAPHY &amp; COSMIC RESONANCE</label>
+                    <textarea class="form-control" id="bio" name="bio" rows="3" placeholder="Share a few words about yourself or your interests...">{{ profile.bio }}</textarea>
+                </div>
+
+                <button type="submit" class="btn-save-profile">
+                    <i class="bi bi-check2-circle me-1"></i> SAVE PROFILE CREDENTIALS
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ══ TAB 2: SAVED DISPATCHES ══ -->
+    <div class="profile-pane" id="saved-tab">
+        {% if saved_posts %}
+        <div class="saved-grid">
+            {% for post in saved_posts %}
+            <div class="saved-card" id="card-post-{{ post.sno }}">
+                <div class="saved-img-wrap">
+                    {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="saved-img">
+                    {% else %}
+                    <div class="saved-img saved-img-placeholder">✦</div>
+                    {% endif %}
+                </div>
+                <div class="saved-body">
+                    <div class="saved-meta">
+                        <span>{{ post.category.name|upper }}</span>
+                        <span>•</span>
+                        <span>{{ post.reading_time }} MIN</span>
+                    </div>
+                    <h4 class="saved-title">
+                        <a href="/blog/{{ post.slug }}/">{{ post.title }}</a>
+                    </h4>
+                    <div class="saved-actions">
+                        <a href="/blog/{{ post.slug }}/" class="btn-read-sm">READ DISPATCH →</a>
+                        <button type="button" class="btn-remove-sm remove-bookmark-btn" data-slug="{{ post.slug }}" data-id="{{ post.sno }}" title="Remove Bookmark">
+                            <i class="bi bi-trash3"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state-box">
+            <i class="bi bi-bookmark-dash empty-state-icon"></i>
+            <h4 class="empty-state-title">NO SAVED DISPATCHES YET</h4>
+            <p class="empty-state-desc">
+                Bookmark articles across the Karuwaki archives to create your personalized reading list.
+            </p>
+            <a href="/blog/" class="btn-save-profile" style="text-decoration:none; display:inline-block;">BROWSE DISPATCHES →</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- ══ TAB 3: SECURITY ══ -->
+    <div class="profile-pane" id="security-tab">
+        <div class="form-glass-card" style="max-width: 600px;">
+            <h4 class="profile-card-title">
+                <i class="bi bi-key-fill text-warning me-2"></i>ACCOUNT SECURITY
+            </h4>
+            <p class="profile-card-desc">
+                Protect your transmission access. Update your credentials regularly to maintain cryptographic account integrity.
+            </p>
+            <a href="/change_password" class="btn-save-profile" style="text-decoration:none; display:inline-block;">
+                <i class="bi bi-shield-lock-fill me-1"></i> CHANGE PASSWORD NOW
+            </a>
+        </div>
+
+        <div class="form-glass-card mt-4" style="max-width: 600px;">
+            <h4 class="profile-card-title">
+                <i class="bi bi-phone-fill text-info me-2"></i>2026 PWA NATIVE APPLICATION
+            </h4>
+            <p class="profile-card-desc">
+                Install KSPEAK$ to your home screen or desktop for fast standalone launch, instant offline reading, and zero browser chrome.
+            </p>
+            <button type="button" class="btn-pwa-install btn-save-profile" style="display:none; cursor:pointer; border:none;">
+                <i class="bi bi-download me-1"></i> INSTALL KSPEAK$ NATIVE APP
+            </button>
+            <div class="mt-3">
+                <a href="/offline/" class="btn-offline-vault">
+                    <i class="bi bi-box-seam text-warning"></i> OPEN OFFLINE READING VAULT
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock body %}
+
+{% block js %}
+<script src="{% static 'js/modules/profile.js' %}"></script>
+{% endblock js %}

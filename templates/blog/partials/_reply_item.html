@@ -1,0 +1,53 @@
+{% load humanize %}
+{% load extras %}
+
+<div class="mb-3 ps-2 comment-reply-node" id="comment-node-{{ reply.sno }}">
+    <div class="d-flex align-items-center flex-wrap gap-1">
+        <span class="comment-user-name" style="font-size:12.5px;">{{ reply.user.username }}</span>
+        {% if reply.user.username|lower == post.author|lower or reply.user.is_staff %}
+        <span class="author-pill-badge" style="font-size:9px; padding:1px 6px;"><i class="bi bi-patch-check-fill"></i> AUTHOR</span>
+        {% endif %}
+        <span class="comment-time">{{ reply.timestamp|naturaltime }}</span>
+        <span class="comment-edited-tag {% if not reply.is_edited %}d-none{% endif %}" id="edited-tag-{{ reply.sno }}">(edited)</span>
+    </div>
+
+    {% if reply.is_deleted %}
+    <div class="comment-body-text text-muted fst-italic py-1" style="font-size:12px;" id="comment-text-{{ reply.sno }}">
+        <i class="bi bi-slash-circle me-1"></i> [This perspective was removed by the author]
+    </div>
+    {% else %}
+    <div class="comment-body-text" style="font-size:13px;" id="comment-text-{{ reply.sno }}">{{ reply.comment }}</div>
+
+    <div class="comment-actions-bar" id="actions-bar-{{ reply.sno }}">
+        <!-- Resonate Button -->
+        {% include 'blog/partials/_resonate_button.html' with comment=reply liked_comments=liked_comments %}
+
+        {% if request.user == reply.user or request.user.is_staff %}
+        <!-- Edit Button -->
+        <button type="button" class="comment-action-btn edit-btn"
+                hx-get="{% url 'editComment' %}?comment_sno={{ reply.sno }}"
+                hx-target="#comment-node-{{ reply.sno }}"
+                hx-swap="outerHTML"
+                title="Edit perspective">
+            <i class="bi bi-pencil-square"></i> Edit
+        </button>
+
+        <!-- Delete Button -->
+        <button type="button" class="comment-action-btn delete-btn"
+                id="del-btn-{{ reply.sno }}"
+                hx-post="{% url 'deleteComment' %}"
+                hx-vals='{"comment_sno": "{{ reply.sno }}"}'
+                hx-confirm="Are you sure you want to remove this reply?"
+                hx-target="#comment-node-{{ reply.sno }}"
+                hx-swap="outerHTML swap:0.3s"
+                title="Delete perspective">
+            <i class="bi bi-trash3"></i> Delete
+        </button>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% if oob_badge %}
+    <span id="comments-count-badge" hx-swap-oob="true" style="font-size:13px; font-family:var(--font-sans); font-weight:700; color:var(--accent-green); background:rgba(193,255,114,0.1); padding:2px 10px; border-radius:50px; margin-left:6px;">{{ total_comments }}</span>
+    {% endif %}
+</div>

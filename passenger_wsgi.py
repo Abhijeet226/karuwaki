@@ -1,0 +1,1 @@
+from karuwakiblog.wsgi import application

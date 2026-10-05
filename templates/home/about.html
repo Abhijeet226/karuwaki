@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us | Karuwaki Speaks Web3.0{% endblock title %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'css/pages/legal.css' %}">
+{% endblock custom_css %}
+
+{% block body %}
+<div class="editorial-page-wrap">
+
+    <!-- ══ BREADCRUMBS ══ -->
+    <div class="editorial-breadcrumbs">
+        <a href="/">HOME</a> / <span>ABOUT KARUWAKI SPEAKS</span>
+    </div>
+
+    <!-- ══ HERO BANNER ══ -->
+    <div class="editorial-hero-card">
+        <div class="editorial-hero-glow"></div>
+        <div class="editorial-tag-pill">
+            <i class="bi bi-stars"></i> THE CULTURAL PARADIGM
+        </div>
+        <h1 class="editorial-title">
+            Amplifying Voices, <span>Illuminating Heritage</span>
+        </h1>
+        <p class="editorial-lead-prose">
+            The ethos of <strong>KaruwakiSpeaks</strong> isn't about making women stronger — women are already inherently strong. It is about bringing transformative changes in how civilization perceives that strength, honors it, and thrives from it. We are a decentralized editorial ecosystem celebrating intellect, heritage, and the future.
+        </p>
+    </div>
+
+    <!-- ══ EDITORIAL PILLARS ══ -->
+    <div class="pillars-grid">
+        <div class="pillar-card">
+            <div class="pillar-icon-box">
+                <i class="bi bi-compass"></i>
+            </div>
+            <h3 class="pillar-title">Ancient Wisdom &amp; Heritage</h3>
+            <p class="pillar-desc">
+                Archiving Odisha's glorious historical legacies, profound philosophy, Vedic astronomy, and the living spirit of Queen Karuwaki.
+            </p>
+        </div>
+
+        <div class="pillar-card">
+            <div class="pillar-icon-box">
+                <i class="bi bi-cpu"></i>
+            </div>
+            <h3 class="pillar-title">AI &amp; Decentralized Media</h3>
+            <p class="pillar-desc">
+                Merging synthetic intelligence, neural curation, and Web3 paradigms to preserve truth, free discourse, and offline resilience.
+            </p>
+        </div>
+
+        <div class="pillar-card">
+            <div class="pillar-icon-box">
+                <i class="bi bi-shield-check"></i>
+            </div>
+            <h3 class="pillar-title">Voice of Reason &amp; Parity</h3>
+            <p class="pillar-desc">
+                Challenging regressive orthodoxies with legal clarity, scientific rationality, and unwavering support for creative autonomy.
+            </p>
+        </div>
+    </div>
+
+    <!-- ══ EDITORIAL QUOTE ══ -->
+    <div class="editorial-quote-box">
+        &ldquo;They say women are the real architects of society. We say: yes, and our partners stand beside us in this collective strength.&rdquo;
+    </div>
+
+    <!-- ══ COMMUNITY / CALL TO ACTION ══ -->
+    <div class="legal-section-card text-center py-4">
+        <h3 style="font-family:var(--font-heading); font-size:22px; font-weight:800; margin-bottom:12px; color:var(--text-primary);">
+            Join the Transmission Network
+        </h3>
+        <p style="font-family:var(--font-sans); font-size:14.5px; color:var(--text-secondary); max-width:620px; margin:0 auto 20px;">
+            Come join, support, and uplift modern forays across technology, art, literature, poetry, healthcare, legal reform, and environmental stewardship.
+        </p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="/blog/" class="btn" style="background:var(--accent-green); color:#010a24; font-family:var(--font-sans); font-weight:800; font-size:12px; letter-spacing:1px; border-radius:30px; padding:10px 24px;">
+                EXPLORE DISPATCHES →
+            </a>
+            <a href="/contact/" class="btn" style="background:rgba(255,255,255,0.08); border:1px solid var(--border-card); color:var(--text-primary); font-family:var(--font-sans); font-weight:700; font-size:12px; letter-spacing:1px; border-radius:30px; padding:10px 24px;">
+                GET IN TOUCH
+            </a>
+        </div>
+    </div>
+
+    <!-- ══ SOCIAL CONNECT ══ -->
+    <div class="social-connect-bar">
+        <a href="https://x.com/KaruwakiSpeaks" target="_blank" rel="noopener noreferrer" class="social-pill-btn">
+            <i class="bi bi-twitter-x"></i> <span>X (Twitter)</span>
+        </a>
+        <a href="https://t.me/karuwakispeaks" target="_blank" rel="noopener noreferrer" class="social-pill-btn">
+            <i class="bi bi-telegram"></i> <span>Telegram</span>
+        </a>
+        <a href="https://www.youtube.com/@karuwakispeaks" target="_blank" rel="noopener noreferrer" class="social-pill-btn">
+            <i class="bi bi-youtube"></i> <span>YouTube</span>
+        </a>
+        <a href="https://facebook.com/karuwakispeaks" target="_blank" rel="noopener noreferrer" class="social-pill-btn">
+            <i class="bi bi-facebook"></i> <span>Facebook</span>
+        </a>
+    </div>
+
+</div>
+{% endblock body %}

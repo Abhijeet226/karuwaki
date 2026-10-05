@@ -1,0 +1,55 @@
+<div class="reaction-dock-pills" id="reaction-matrix"
+     hx-get="{% url 'reactPost' %}?post_sno={{ post.sno }}"
+     hx-trigger="every 45s"
+     hx-swap="outerHTML">
+    <button type="button" class="reaction-pill-btn {% if user_reaction == 'mindblown' %}reacted{% endif %}"
+            hx-post="{% url 'reactPost' %}"
+            hx-vals='{"reaction": "mindblown", "post_sno": "{{ post.sno }}"}'
+            hx-target="#reaction-matrix"
+            hx-swap="outerHTML"
+            id="rx-btn-mindblown">
+        <span class="rx-emoji">🤯</span>
+        <span class="rx-label">Mind Blown</span>
+        <span class="rx-count" id="rx-cnt-mindblown">{{ post.reactions.mindblown|default:0 }}</span>
+    </button>
+    <button type="button" class="reaction-pill-btn {% if user_reaction == 'insightful' %}reacted{% endif %}"
+            hx-post="{% url 'reactPost' %}"
+            hx-vals='{"reaction": "insightful", "post_sno": "{{ post.sno }}"}'
+            hx-target="#reaction-matrix"
+            hx-swap="outerHTML"
+            id="rx-btn-insightful">
+        <span class="rx-emoji">💡</span>
+        <span class="rx-label">Insightful</span>
+        <span class="rx-count" id="rx-cnt-insightful">{{ post.reactions.insightful|default:0 }}</span>
+    </button>
+    <button type="button" class="reaction-pill-btn {% if user_reaction == 'timeless' %}reacted{% endif %}"
+            hx-post="{% url 'reactPost' %}"
+            hx-vals='{"reaction": "timeless", "post_sno": "{{ post.sno }}"}'
+            hx-target="#reaction-matrix"
+            hx-swap="outerHTML"
+            id="rx-btn-timeless">
+        <span class="rx-emoji">⏳</span>
+        <span class="rx-label">Timeless</span>
+        <span class="rx-count" id="rx-cnt-timeless">{{ post.reactions.timeless|default:0 }}</span>
+    </button>
+    <button type="button" class="reaction-pill-btn {% if user_reaction == 'inspiring' %}reacted{% endif %}"
+            hx-post="{% url 'reactPost' %}"
+            hx-vals='{"reaction": "inspiring", "post_sno": "{{ post.sno }}"}'
+            hx-target="#reaction-matrix"
+            hx-swap="outerHTML"
+            id="rx-btn-inspiring">
+        <span class="rx-emoji">✨</span>
+        <span class="rx-label">Inspiring</span>
+        <span class="rx-count" id="rx-cnt-inspiring">{{ post.reactions.inspiring|default:0 }}</span>
+    </button>
+    <button type="button" class="reaction-pill-btn {% if user_reaction == 'provocative' %}reacted{% endif %}"
+            hx-post="{% url 'reactPost' %}"
+            hx-vals='{"reaction": "provocative", "post_sno": "{{ post.sno }}"}'
+            hx-target="#reaction-matrix"
+            hx-swap="outerHTML"
+            id="rx-btn-provocative">
+        <span class="rx-emoji">🔥</span>
+        <span class="rx-label">Provocative</span>
+        <span class="rx-count" id="rx-cnt-provocative">{{ post.reactions.provocative|default:0 }}</span>
+    </button>
+</div>
