@@ -77,6 +77,15 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'karuwakiblog.urls'
 
 # Security & Browser Hardening
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv(
+        'CSRF_TRUSTED_ORIGINS',
+        'https://karuwaki.onrender.com,https://*.onrender.com,https://karuwakispeaks.com,https://www.karuwakispeaks.com,http://127.0.0.1,http://localhost'
+    ).split(',')
+    if origin.strip()
+]
 SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'SAMEORIGIN'
@@ -178,6 +187,15 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR,'assets')
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+    },
+}
 
 MEDIA_URL = "/Karuwaki/media/"
 
