@@ -22,6 +22,7 @@ class Command(BaseCommand):
             user.email = email
             user.is_staff = True
             user.is_superuser = True
+            user.is_active = True
             user.save()
             self.stdout.write(self.style.SUCCESS(f"Updated credentials for existing superuser '{username}'."))
         else:

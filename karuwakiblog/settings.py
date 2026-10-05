@@ -115,34 +115,46 @@ WSGI_APPLICATION = 'karuwakiblog.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.mysql'),
-        'NAME': os.getenv('DB_NAME', 'Karuwaki_db'),
-        'USER': os.getenv('DB_USER', 'karuwaki'),
-        'PASSWORD': os.getenv('DB_PASSWORD', ''),
-        'HOST': os.getenv('DB_HOST', ''),
-        'PORT': os.getenv('DB_PORT', ''),
+if os.environ.get('USE_SQLITE') == '1' or not os.getenv('DB_PASSWORD') or os.getenv('DB_ENGINE', '').endswith('sqlite3'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
-
-# Auto-fallback to local SQLite if MySQL socket or port 3306 is not available locally
-if os.environ.get('USE_SQLITE') == '1' or not os.path.exists('/var/lib/mysql/mysql.sock'):
-    try:
-        import socket
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.settimeout(0.3)
-        res = s.connect_ex(('127.0.0.1', 3306))
-        s.close()
-        if res != 0:
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.mysql'),
+            'NAME': os.getenv('DB_NAME', 'Karuwaki_db'),
+            'USER': os.getenv('DB_USER', 'karuwaki'),
+            'PASSWORD': os.getenv('DB_PASSWORD', ''),
+            'HOST': os.getenv('DB_HOST', ''),
+            'PORT': os.getenv('DB_PORT', ''),
+        }
+    }
+    # Auto-fallback to local SQLite if MySQL socket or port 3306 is not available locally
+    if not os.path.exists('/var/lib/mysql/mysql.sock'):
+        try:
+            import socket
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.settimeout(0.3)
+            res = s.connect_ex(('127.0.0.1', 3306))
+            s.close()
+            if res != 0:
+                DATABASES = {
+                    'default': {
+                        'ENGINE': 'django.db.backends.sqlite3',
+                        'NAME': BASE_DIR / 'db.sqlite3',
+                    }
+                }
+        except Exception:
             DATABASES = {
                 'default': {
                     'ENGINE': 'django.db.backends.sqlite3',
                     'NAME': BASE_DIR / 'db.sqlite3',
                 }
             }
-    except Exception:
-        pass
 
 
 # Password validation
